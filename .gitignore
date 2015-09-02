@@ -1,2 +1,3 @@
 .classpath
 /WebRoot/META-INF/*
+/WebRoot/META-INF/classes/*
