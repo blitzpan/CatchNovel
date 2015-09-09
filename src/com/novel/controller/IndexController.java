@@ -2,12 +2,16 @@ package com.novel.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class IndexController {
 	@RequestMapping("/index")
-	public String index(){
+	public ModelAndView index(){
 		System.out.println("index");
-		return "index";
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("message", "hello world!");
+		mv.setViewName("index");
+		return mv;
 	}
 }
