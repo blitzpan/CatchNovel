@@ -22,21 +22,35 @@ public class TianyaCatcher {
 	private TianyaDao tianyaDao;
 	@Autowired 
 	private BookDao bookDao;
-	
+	private List<Tianya> tyL = null;//天涯任务list
 	private Document doc = null;//一个页面
 	private String pageNum = "";//页码
 	private StringBuffer sb = new StringBuffer();//本页的所有内容
-	
+	/**
+	 * 查询所有要采集的任务
+	 * @throws Exception
+	 */
 	public void queryAllTask() throws Exception{
-		List<Tianya> tyL = tianyaDao.queryAll(null);
+		tyL = tianyaDao.queryAll(null);
 		System.out.println("查询所有任务开始：");
 		for(Tianya ty : tyL){
-			System.out.println(ty);
+			System.out.println("采集开始：" + ty);
+			catchOne(ty);
 		}
 		System.out.println("查询所有任务结束。");
 	}
-	
-	
+
+	/**
+	 * 采集一个
+	 * @param ty
+	 */
+	private void catchOne(Tianya ty){
+		try{
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	
 	
