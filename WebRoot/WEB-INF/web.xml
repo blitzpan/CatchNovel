@@ -41,7 +41,7 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>CatchNovelServlet</servlet-name>
-  	<url-pattern>/</url-pattern>
+  	<url-pattern>*.action</url-pattern><!-- 只有对于.action的请求，才拦截 -->
   </servlet-mapping>
   
 </web-app>
