@@ -1,7 +1,8 @@
-package com.novel.tianya;
+package com.novel.catcher;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,11 +10,56 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.novel.dao.BookDao;
+import com.novel.dao.TianyaDao;
+import com.novel.entity.Tianya;
+@Service
 public class TianyaCatcher {
-	Document doc = null;//一个页面
-	String pageNum = "";//页码
-	StringBuffer sb = new StringBuffer();//本页的所有内容
+	@Autowired
+	private TianyaDao tianyaDao;
+	@Autowired 
+	private BookDao bookDao;
+	
+	private Document doc = null;//一个页面
+	private String pageNum = "";//页码
+	private StringBuffer sb = new StringBuffer();//本页的所有内容
+	
+	public void queryAllTask() throws Exception{
+		List<Tianya> tyL = tianyaDao.queryAll(null);
+		System.out.println("查询所有任务开始：");
+		for(Tianya ty : tyL){
+			System.out.println(ty);
+		}
+		System.out.println("查询所有任务结束。");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public static void main(String[] args) {
 		String url = "http://bbs.tianya.cn/post-16-1150797-3.shtml";
 		System.out.println(url + "的内容：");
@@ -71,6 +117,18 @@ public class TianyaCatcher {
 		if(m.find()){
 			pageNum = m.group(0).replace(".shtml", "");
 		}
+	}
+	public TianyaDao getTianyaDao() {
+		return tianyaDao;
+	}
+	public void setTianyaDao(TianyaDao tianyaDao) {
+		this.tianyaDao = tianyaDao;
+	}
+	public BookDao getBookDao() {
+		return bookDao;
+	}
+	public void setBookDao(BookDao bookDao) {
+		this.bookDao = bookDao;
 	}
 	
 	

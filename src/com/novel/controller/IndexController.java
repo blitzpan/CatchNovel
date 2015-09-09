@@ -1,22 +1,26 @@
 package com.novel.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.novel.catcher.TianyaCatcher;
+
 @Controller
 public class IndexController {
 	@Autowired
-	private JdbcTemplate jdbcTemplate;
+	private TianyaCatcher tianyaCatcher;
 	
 	@RequestMapping("/index")
 	public ModelAndView index(){
-		System.out.println("开始连接数据库：");
-		String sql = "SELECT count(*) from book";
-		int c = jdbcTemplate.queryForInt(sql);
-		System.out.println("结果="+c);
+		try{
+			tianyaCatcher.queryAllTask();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		
 		
 		
 		
@@ -26,11 +30,13 @@ public class IndexController {
 		return mv;
 	}
 
-	public JdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
+	public TianyaCatcher getTianyaCatcher() {
+		return tianyaCatcher;
 	}
 
-	public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	public void setTianyaCatcher(TianyaCatcher tianyaCatcher) {
+		this.tianyaCatcher = tianyaCatcher;
 	}
+
+
 }
