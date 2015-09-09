@@ -46,6 +46,13 @@ public class TianyaCatcher {
 	 */
 	private void catchOne(Tianya ty){
 		try{
+			String url = ty.getArticleUrl();
+			url = url.replace("pageNum", ty.getPageNum());
+			//第一次获取
+			this.getDocByUrl(url);
+			this.getPageNum();
+			this.getContent(ty);
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -81,7 +88,7 @@ public class TianyaCatcher {
 		
 		try {
 			t.getDocByUrl(url);
-			t.getContent();
+//			t.getContent();
 //			t.getPageNum();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -111,7 +118,7 @@ public class TianyaCatcher {
 			e.printStackTrace();
 		}
 	}
-	private void getContent() throws Exception{
+	private void getContent(Tianya ty) throws Exception{
 		Elements atlItems = doc.getElementsByClass("atl-item"); 
 //				doc.select("div.atl-item");
 //		System.out.println(atlItems);
