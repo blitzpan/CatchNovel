@@ -26,7 +26,7 @@
 	ref参数指定的即任务类，method指定的即需要运行的方法，cron及cronExpression表达式，具体写法这里不介绍了，详情见上篇文章附录。
 	 -->
 	<task:scheduled-tasks> 
-		<task:scheduled ref="catchTianyaTask" method="job1" cron="4 * * * * ?"/> 
+		<task:scheduled ref="catchTianyaTask" method="job1" cron="0 */1 * * * ?"/>
 	</task:scheduled-tasks>
 	
 	
