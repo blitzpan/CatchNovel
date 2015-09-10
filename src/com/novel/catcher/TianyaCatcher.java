@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.novel.dao.BookDao;
 import com.novel.dao.TianyaDao;
 import com.novel.entity.Tianya;
+import com.novel.util.ComUtils;
 @Service
 public class TianyaCatcher {
 	@Autowired
@@ -23,9 +24,6 @@ public class TianyaCatcher {
 	@Autowired 
 	private BookDao bookDao;
 	private List<Tianya> tyL = null;//天涯任务list
-	private Document doc = null;//一个页面
-	private String pageNum = "";//页码
-	private StringBuffer sb = new StringBuffer();//本页的所有内容
 	/**
 	 * 查询所有要采集的任务
 	 * @throws Exception
@@ -35,9 +33,20 @@ public class TianyaCatcher {
 		System.out.println("查询所有任务开始：");
 		for(Tianya ty : tyL){
 			System.out.println("采集开始：" + ty);
-			catchOne(ty);
+			CatchOne co = new CatchOne(ty);
+			new Thread(co).start();
 		}
 		System.out.println("查询所有任务结束。");
+	}
+	class CatchOne implements Runnable{
+		Tianya ty = null;
+		public CatchOne(Tianya ty) {
+			super();
+			this.ty = ty;
+		}
+		public void run() {
+			catchOne(ty);
+		}
 	}
 
 	/**
@@ -45,64 +54,71 @@ public class TianyaCatcher {
 	 * @param ty
 	 */
 	private void catchOne(Tianya ty){
+		Document doc = null;//一个页面
+		String oldPageNum = "";//初始化的pageNum
+		String pageNum = "";//页码
+		String content = "";
 		try{
-			String url = ty.getArticleUrl();
-			url = url.replace("pageNum", ty.getPageNum());
-			//第一次获取
-			this.getDocByUrl(url);
-			this.getPageNum();
-			this.getContent(ty);
-			
-			
+			String url = "";
+			pageNum = ty.getPageNum();
+			int i = 0;
+			do{
+				url = ty.getArticleUrl().replace("pageNum", pageNum);
+				//第一次获取
+				doc = getDocByUrl(url);
+				pageNum = getPageNum(doc);
+				if(pageNum.equals(oldPageNum)){//已经抓取过了，不处理
+					break;
+				}
+				content = getContent(ty,doc);
+				System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
+				oldPageNum = pageNum;
+				pageNum = "" + (ComUtils.parseInt(pageNum) + 1);//+1，查询下一页
+				if(i++ == 3){
+					break;
+				}
+			}while(true);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static void main(String[] args) {
-		String url = "http://bbs.tianya.cn/post-16-1150797-3.shtml";
-		System.out.println(url + "的内容：");
-		TianyaCatcher t = new TianyaCatcher();
-		
-		try {
-			t.getDocByUrl(url);
-//			t.getContent();
-//			t.getPageNum();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	public void getDocByUrl(String url) throws Exception{
+
+	public Document getDocByUrl(String url) throws Exception{
+		Document doc = null;
 		try{
 			doc = Jsoup.connect(url).get();
-			this.writeToFile(doc.toString());
+//			this.writeToFile(doc.toString());
 			System.out.println("完成");
 		}catch(Exception e){
 			e.printStackTrace();
 			throw e;
 		}
+		return doc;
+	}
+
+	private String getContent(Tianya ty, Document doc) throws Exception{
+		StringBuffer sb = new StringBuffer();//本页的所有内容
+		Elements atlItems = doc.getElementsByClass("atl-item"); 
+		for(Element e: atlItems){
+			Elements altInfos = e.getElementsByClass("atl-info");
+			if(altInfos.size()>0 && altInfos.get(0).toString().contains(ty.getAuthorId())){
+				sb.append(e.getElementsByClass("bbs-content").text());
+//				System.out.println(e.getElementsByClass("bbs-content").text());
+			}
+		}
+		return sb.toString();
+	}
+	private String getPageNum(Document doc) throws Exception{
+//		doc.baseUri()、doc.location()获取重定向之后的页面地址。
+//		如100000页返回的是：http://bbs.tianya.cn/post-16-1150797-132.shtml
+		String pageNum = "";
+		String redirectUrl = doc.baseUri();
+		Pattern p = Pattern.compile("\\d+\\.shtml");
+		Matcher m = p.matcher(redirectUrl);
+		if(m.find()){
+			pageNum = m.group(0).replace(".shtml", "");
+		}
+		return pageNum;
 	}
 	public static void writeToFile(String content) {
 		try {
@@ -118,27 +134,20 @@ public class TianyaCatcher {
 			e.printStackTrace();
 		}
 	}
-	private void getContent(Tianya ty) throws Exception{
-		Elements atlItems = doc.getElementsByClass("atl-item"); 
-//				doc.select("div.atl-item");
-//		System.out.println(atlItems);
-		for(Element e: atlItems){
-			Elements altInfos = e.getElementsByClass("atl-info");
-			if(altInfos.size()>0 && altInfos.get(0).toString().contains("御风楼主人")){
-				System.out.println(e.getElementsByClass("bbs-content").text());
-			}
+	
+	public static void main(String[] args) {
+		String url = "http://bbs.tianya.cn/post-16-1150797-3.shtml";
+		System.out.println(url + "的内容：");
+		TianyaCatcher t = new TianyaCatcher();
+		try {
+			t.getDocByUrl(url);
+//			t.getContent();
+//			t.getPageNum();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	private void getPageNum() throws Exception{
-//		doc.baseUri()、doc.location()获取重定向之后的页面地址。
-//		如100000页返回的是：http://bbs.tianya.cn/post-16-1150797-132.shtml
-		String redirectUrl = doc.baseUri();
-		Pattern p = Pattern.compile("\\d+\\.shtml");
-		Matcher m = p.matcher(redirectUrl);
-		if(m.find()){
-			pageNum = m.group(0).replace(".shtml", "");
-		}
-	}
+	
 	public TianyaDao getTianyaDao() {
 		return tianyaDao;
 	}
@@ -151,57 +160,4 @@ public class TianyaCatcher {
 	public void setBookDao(BookDao bookDao) {
 		this.bookDao = bookDao;
 	}
-	
-	
-	/*
-	public static String getContent(String url) {
-		String res = null;
-		CloseableHttpResponse response = null;
-		try {
-			CloseableHttpClient httpclient = HttpClients.createDefault();
-			HttpGet httpGet = new HttpGet(url);
-			response = httpclient.execute(httpGet);
-			HttpEntity entity1 = response.getEntity();
-			res = EntityUtils.toString(entity1);
-			System.out.println(res);
-			// writeToFile(res);
-		} catch (Exception e) {
-			System.out.println("UrlGet error.");
-			e.printStackTrace();
-		} finally {
-			try {
-				response.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return res;
-	}
-
-	public static void parseHtml(String url) {
-		try {
-			Parser parser = new Parser(url);
-			parser.setEncoding("utf-8");
-			NodeFilter filter = new AndFilter(
-					new NodeFilter[] {new NodeClassFilter(Div.class), new HasAttributeFilter("class","atl-item") });
-			NodeList list = parser.parse(filter);
-			for (int i = 0; i < list.size(); i++) {
-				Node n = list.elementAt(i);
-				NodeList nl = n.getChildren();
-				if (nl.elementAt(1).toHtml().contains("<span><strong class=\"host\">楼主")) {
-					Node n2 = nl.elementAt(3).getChildren().elementAt(3).getChildren().elementAt(1);
-					String tempStr = n2.toHtml().replaceAll("<div class=\"bbs-content\">", "").replaceAll("</div>", "").trim();
-					tempStr = tempStr.replaceAll("<a\\s.*?href=\"([^\"]+)\"[^>]*>(.*?)</a>", "");
-					System.out.println(tempStr);
-				} else {
-					continue;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	*/
 }

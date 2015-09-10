@@ -8,13 +8,13 @@
 	<!-- 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext.xml</param-value>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
 	</context-param>
-	-->
+	 -->
   <!-- 启动IOC容器的ServletContextListener -->
-  <listener>
+  <!-- <listener>
   	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
+  </listener> -->
   <!-- 过滤中文字符，防止中文乱码 -->
   <filter>
   	<filter-name>CharacterEncodingFilter</filter-name>
