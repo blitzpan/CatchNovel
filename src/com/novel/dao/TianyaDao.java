@@ -15,6 +15,11 @@ import com.novel.entity.Tianya;
 public class TianyaDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	public void updatePage(Tianya ty) throws Exception{
+		String sql = "update tianya set pageNum=? WHERE id=?";
+		Object[] values = new Object[]{ty.getPageNum(), ty.getId()};
+		jdbcTemplate.update(sql, values);
+	}
 	
 	public List<Tianya> queryAll(Map para) throws Exception{
 		String sql = "SELECT * from tianya";

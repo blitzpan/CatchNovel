@@ -13,23 +13,24 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.novel.dao.BookDao;
-import com.novel.dao.TianyaDao;
+import com.novel.entity.Book;
 import com.novel.entity.Tianya;
+import com.novel.service.BookService;
+import com.novel.service.TianyaService;
 import com.novel.util.ComUtils;
 @Service
 public class TianyaCatcher {
 	@Autowired
-	private TianyaDao tianyaDao;
+	private TianyaService tianyaService;
 	@Autowired 
-	private BookDao bookDao;
+	private BookService bookService;
 	private List<Tianya> tyL = null;//天涯任务list
 	/**
 	 * 查询所有要采集的任务
 	 * @throws Exception
 	 */
 	public void queryAllTask() throws Exception{
-		tyL = tianyaDao.queryAll(null);
+		tyL = tianyaService.queryAll(null);
 		System.out.println("查询所有任务开始：");
 		for(Tianya ty : tyL){
 			System.out.println("采集开始：" + ty);
@@ -62,8 +63,10 @@ public class TianyaCatcher {
 			String url = "";
 			pageNum = ty.getPageNum();
 			int i = 0;
+			Book book = null;
 			do{
-				url = ty.getArticleUrl().replace("pageNum", pageNum);
+				book = new Book();
+				url = ty.getRealUrl();
 				//第一次获取
 				doc = getDocByUrl(url);
 				pageNum = getPageNum(doc);
@@ -72,9 +75,16 @@ public class TianyaCatcher {
 				}
 				content = getContent(ty,doc);
 				System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
+				//抓取的内容入库
+				book.setPageNum(pageNum);
+				book.setBookId(ty.getBookId());
+				book.setContent(content);
+				tianyaService.addBook(ty, book);
+				
 				oldPageNum = pageNum;
-				pageNum = "" + (ComUtils.parseInt(pageNum) + 1);//+1，查询下一页
-				if(i++ == 3){
+				ty.pageNumAdd();
+				pageNum = ty.getPageNum();
+				if(i++ == 3){//测试，3条就跳出循环
 					break;
 				}
 			}while(true);
@@ -86,7 +96,7 @@ public class TianyaCatcher {
 	public Document getDocByUrl(String url) throws Exception{
 		Document doc = null;
 		try{
-			doc = Jsoup.connect(url).get();
+			doc = Jsoup.connect(url).timeout(1000*60).get();
 //			this.writeToFile(doc.toString());
 			System.out.println("完成");
 		}catch(Exception e){
@@ -98,7 +108,16 @@ public class TianyaCatcher {
 
 	private String getContent(Tianya ty, Document doc) throws Exception{
 		StringBuffer sb = new StringBuffer();//本页的所有内容
-		Elements atlItems = doc.getElementsByClass("atl-item"); 
+		Elements mainElements = null;
+		Elements atlItems = doc.getElementsByClass("atl-item");
+		if(ty.getPageNum().equals("1")){//如果是首页，那么1楼单独处理
+			mainElements = doc.getElementsByClass("atl-main");
+		}
+		Element mainE = null;
+		for(int i=0; mainElements!=null && i<mainElements.size(); i++){
+			mainE = mainElements.get(i);
+			sb.append(mainE.text());
+		}
 		for(Element e: atlItems){
 			Elements altInfos = e.getElementsByClass("atl-info");
 			if(altInfos.size()>0 && altInfos.get(0).toString().contains(ty.getAuthorId())){
@@ -135,6 +154,22 @@ public class TianyaCatcher {
 		}
 	}
 	
+	public TianyaService getTianyaService() {
+		return tianyaService;
+	}
+
+	public void setTianyaService(TianyaService tianyaService) {
+		this.tianyaService = tianyaService;
+	}
+
+	public BookService getBookService() {
+		return bookService;
+	}
+
+	public void setBookService(BookService bookService) {
+		this.bookService = bookService;
+	}
+
 	public static void main(String[] args) {
 		String url = "http://bbs.tianya.cn/post-16-1150797-3.shtml";
 		System.out.println(url + "的内容：");
@@ -148,16 +183,4 @@ public class TianyaCatcher {
 		}
 	}
 	
-	public TianyaDao getTianyaDao() {
-		return tianyaDao;
-	}
-	public void setTianyaDao(TianyaDao tianyaDao) {
-		this.tianyaDao = tianyaDao;
-	}
-	public BookDao getBookDao() {
-		return bookDao;
-	}
-	public void setBookDao(BookDao bookDao) {
-		this.bookDao = bookDao;
-	}
 }

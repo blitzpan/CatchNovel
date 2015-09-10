@@ -1,5 +1,9 @@
 package com.novel.entity;
 
+import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
+
+import com.novel.util.ComUtils;
+
 public class Tianya {
 	private String id;
 	private String bookId;
@@ -11,6 +15,19 @@ public class Tianya {
 	private String homeUrl;
 	private String pageNum;
 	private String state;
+	/**
+	 * 根据正则url和页码获取真实的页码
+	 * @return
+	 */
+	public String getRealUrl(){
+		return articleUrl.replace("pageNum", pageNum);
+	}
+	/**
+	 * 页码加一
+	 */
+	public void pageNumAdd(){
+		pageNum = "" + (ComUtils.parseInt(pageNum) + 1);//页码+1
+	}
 	
 	@Override
 	public String toString() {

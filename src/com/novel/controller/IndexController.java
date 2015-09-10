@@ -18,8 +18,8 @@ public class IndexController {
 	@RequestMapping("/index")
 	public ModelAndView index(){
 		try{
-//			tianyaCatcher.queryAllTask();
-			transactionalService.addBooks();
+			tianyaCatcher.queryAllTask();
+//			transactionalService.addBooks();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
