@@ -2,6 +2,7 @@ package com.novel.dao;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -19,6 +20,11 @@ public class TianyaDao {
 		String sql = "SELECT * from tianya";
 		Object[] values = new Object[]{};
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Tianya.class), values);
+	}
+	public int addTianya() throws Exception{
+		String sql = "insert into tianya(id,bookid ) values (?,'1')";
+		Object[] values = new Object[]{UUID.randomUUID().toString().replace("-", "")};
+		return jdbcTemplate.update(sql, values);
 	}
 
 	public JdbcTemplate getJdbcTemplate() {

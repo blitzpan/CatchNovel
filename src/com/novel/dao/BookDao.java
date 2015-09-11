@@ -8,12 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-@Transactional
 @Repository
 public class BookDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public Map addBook(String id) throws Exception{
 		if(id.equals("5")){
 			id = "4";
