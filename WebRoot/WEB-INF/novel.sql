@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50015
 File Encoding         : 65001
 
-Date: 2015-09-09 15:59:09
+Date: 2015-09-11 17:10:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,6 +31,10 @@ CREATE TABLE `book` (
 -- ----------------------------
 -- Records of book
 -- ----------------------------
+INSERT INTO `book` VALUES ('1', '1', '1', 'a', '2015-09-11 16:48:15');
+INSERT INTO `book` VALUES ('2', '1', '1', 'a', '2015-09-11 16:48:15');
+INSERT INTO `book` VALUES ('3', '1', '1', 'a', '2015-09-11 16:48:15');
+INSERT INTO `book` VALUES ('4', '1', '1', 'a', '2015-09-11 16:48:15');
 
 -- ----------------------------
 -- Table structure for `tianya`
@@ -53,3 +57,4 @@ CREATE TABLE `tianya` (
 -- ----------------------------
 -- Records of tianya
 -- ----------------------------
+INSERT INTO `tianya` VALUES ('1', '1', '53777039', '御风楼主人', '六相', '1150797', 'http://bbs.tianya.cn/post-16-1150797-pageNum.shtml', 'http://bbs.tianya.cn/post-16-1150797-1.shtml', '1', '1');
