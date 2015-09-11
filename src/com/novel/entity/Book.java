@@ -6,11 +6,12 @@ public class Book {
 	private String pageNum;
 	private String content;
 	private String gatherDate;
-	
+	private int sendMail;
+		
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", bookId=" + bookId + ", pageNum=" + pageNum + ", content=" + content
-				+ ", gatherDate=" + gatherDate + "]";
+				+ ", gatherDate=" + gatherDate + ", sendMail=" + sendMail + "]";
 	}
 	public String getId() {
 		return id;
@@ -41,5 +42,11 @@ public class Book {
 	}
 	public void setGatherDate(String gatherDate) {
 		this.gatherDate = gatherDate;
+	}
+	public int getSendMail() {
+		return sendMail;
+	}
+	public void setSendMail(int sendMail) {
+		this.sendMail = sendMail;
 	}
 }

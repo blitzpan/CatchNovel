@@ -5,3 +5,4 @@ encoding//resource/log4j.properties=UTF-8
 encoding//resource/mail.properties=UTF-8
 encoding//src/com/novel/util/CatchTianyaTask.java=UTF-8
 encoding//src/com/novel/util/ComUtils.java=UTF-8
+encoding//src/com/novel/util/SendMailTask.java=UTF-8

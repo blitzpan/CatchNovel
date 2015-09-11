@@ -19,7 +19,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import freemarker.template.Template;  
 import freemarker.template.TemplateException;
 @Component
-public class MailUtils {
+public class SendMailUtils {
 	@Autowired
 	private JavaMailSender mailSender;
 	@Autowired
@@ -122,7 +122,7 @@ public class MailUtils {
 		this.freemarkerConfiguration = freemarkerConfiguration;
 	}
 	public static void main(String[] args) {
-        MailUtils mu = new MailUtils();
+        SendMailUtils mu = new SendMailUtils();
 //        mu.sendSimpleMail();
 	}
 }

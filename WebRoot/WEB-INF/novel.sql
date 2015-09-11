@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50015
 File Encoding         : 65001
 
-Date: 2015-09-12 15:13:29
+Date: 2015-09-11 17:10:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,7 +25,7 @@ CREATE TABLE `book` (
   `pageNum` varchar(8) default NULL COMMENT '页码',
   `content` longtext COMMENT '正文',
   `gatherDate` datetime default NULL COMMENT '时间',
-  `sendMail` int(11) default '1' COMMENT '本章节是否发送邮件，1：默认发送',
+  `sendMail` int(1) default '1' COMMENT '本章节是否发送邮件，1：默认发送',
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -91,6 +91,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('1', 'god', 'god', '1028353676@qq.com');
 
 -- ----------------------------
 -- Table structure for `user_book`
@@ -107,3 +108,4 @@ CREATE TABLE `user_book` (
 -- ----------------------------
 -- Records of user_book
 -- ----------------------------
+INSERT INTO `user_book` VALUES ('1', '1', '1', '1');
