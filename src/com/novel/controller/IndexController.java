@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.novel.catcher.TianyaCatcher;
 import com.novel.service.TransactionalService;
+import com.novel.util.MailUtils;
 
 @Controller
 public class IndexController {
@@ -14,6 +15,8 @@ public class IndexController {
 	private TianyaCatcher tianyaCatcher;
 	@Autowired
 	private TransactionalService transactionalService;
+	@Autowired
+	private MailUtils mailUtils;
 	
 	@RequestMapping("/index")
 	public ModelAndView index(){
@@ -27,6 +30,15 @@ public class IndexController {
 		mv.addObject("message", "hello world!");
 		mv.setViewName("index");
 		return mv;
+	}
+	@RequestMapping("/sendMail")
+	public void sendMail(){
+		try{
+//			mailUtils.sendSimpleMail();
+			mailUtils.sendHtmlMail();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	public TianyaCatcher getTianyaCatcher() {
@@ -43,6 +55,12 @@ public class IndexController {
 
 	public void setTransactionalService(TransactionalService transactionalService) {
 		this.transactionalService = transactionalService;
+	}
+	public MailUtils getMailUtils() {
+		return mailUtils;
+	}
+	public void setMailUtils(MailUtils mailUtils) {
+		this.mailUtils = mailUtils;
 	}
 
 
