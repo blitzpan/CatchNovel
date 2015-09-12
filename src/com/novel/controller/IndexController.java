@@ -35,7 +35,8 @@ public class IndexController {
 	public void sendMail(){
 		try{
 //			mailUtils.sendSimpleMail();
-			mailUtils.sendHtmlMail();
+//			mailUtils.sendHtmlMail();
+			mailUtils.sendTemplateMail();
 		}catch(Exception e){
 			e.printStackTrace();
 		}

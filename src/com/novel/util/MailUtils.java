@@ -1,5 +1,11 @@
 package com.novel.util;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +13,21 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+
+import freemarker.template.Template;  
+import freemarker.template.TemplateException;
 @Component
 public class MailUtils {
 	@Autowired
 	private JavaMailSender mailSender;
-
+	@Autowired
+	private FreeMarkerConfigurer freemarkerConfiguration;
+	/**
+	 * 单纯的文本邮件
+	 * @return
+	 */
 	public String sendSimpleMail() {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		try {
@@ -25,6 +41,10 @@ public class MailUtils {
 		}
 		return "a";
 	}
+	/**
+	 * html邮件
+	 * @throws Exception
+	 */
 	public void sendHtmlMail() throws Exception{
 		// 建立邮件消息,发送简单邮件和html邮件的区别  
         MimeMessage mailMessage = mailSender.createMimeMessage();  
@@ -44,6 +64,48 @@ public class MailUtils {
   
         System.out.println("邮件发送成功..");  
 	}
+	/**
+	 * 通过模板来发送邮件
+	 * @return
+	 */
+	public void sendTemplateMail() throws Exception{
+		// 建立邮件消息,发送简单邮件和html邮件的区别  
+        MimeMessage mailMessage = mailSender.createMimeMessage();  
+        //这里一定要是gbk，如果是utf-8的话，会出现乱码问题
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage,true,"gbk");
+        
+        messageHelper.setTo("1028353676@qq.com");// 接受者
+        messageHelper.setFrom("youxiangformajia@163.com");// 发送者,和xml中的一致
+        messageHelper.setSubject("邮件测试");// 主题  
+        
+        // true 表示启动HTML格式的邮件  
+        messageHelper.setText(getEmailContent(), true);
+        // 发送邮件  
+        mailSender.send(mailMessage);
+        System.out.println("邮件发送成功..");  
+	}
+	private String getEmailContent() throws Exception{
+		try {
+			Template template = freemarkerConfiguration.getConfiguration().getTemplate("mail.ftl");
+
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("fromName", "<a href=\"http://www.baidu.com\" target=\"_blank\">神的首页</a>");
+			map.put("sendTime", new Date().toString());
+			String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+			return content;
+
+		} catch (TemplateException e) {
+			System.out.println("Error while processing FreeMarker template ");
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			System.out.println("Error while open template file ");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Error while generate Email Content ");
+			e.printStackTrace();
+		}
+		return "";
+	}
 
 	public JavaMailSender getMailSender() {
 		return mailSender;
@@ -53,6 +115,12 @@ public class MailUtils {
 		this.mailSender = mailSender;
 	}
 
+	public FreeMarkerConfigurer getFreemarkerConfiguration() {
+		return freemarkerConfiguration;
+	}
+	public void setFreemarkerConfiguration(FreeMarkerConfigurer freemarkerConfiguration) {
+		this.freemarkerConfiguration = freemarkerConfiguration;
+	}
 	public static void main(String[] args) {
         MailUtils mu = new MailUtils();
 //        mu.sendSimpleMail();
