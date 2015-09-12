@@ -2,3 +2,4 @@
 /WebRoot/META-INF/*
 /WebRoot/WEB-INF/classes/*
 /bin/
+/resource/mail.properties
