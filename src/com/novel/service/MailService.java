@@ -13,6 +13,7 @@ import com.novel.dao.BookDao;
 import com.novel.dao.UserBookDao;
 import com.novel.entity.Book;
 import com.novel.entity.UserBook;
+import com.novel.util.SendMailUtils;
 
 @Service
 public class MailService {
@@ -37,7 +38,10 @@ public class MailService {
 			List<Book> bookL = bookDao.queryBooks(parm);//查询所有需要发送的章节信息
 			for(Book book : bookL){
 				ubL = userBookDao.queryUserBook(book);
+				System.out.println("book=" + book);
 				System.out.println("ubL = "+ubL);
+				new SendMailUtils(book,ubL).start();
+				break;
 			}
 			log.info("SendMessage over.");
 		}catch(Exception e){

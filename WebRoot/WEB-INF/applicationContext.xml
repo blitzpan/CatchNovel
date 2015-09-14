@@ -20,6 +20,9 @@
 		<property name="prefix" value="/jsp/" /> <!--可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
 		<property name="suffix" value=".jsp"/>
 	</bean>
+	
+	<!-- 在那些不能使用注入功能的类的时候，用此工具，来获取spring托管的类 -->
+	<bean id="SpringContextUtil" class="com.novel.util.SpringContextUtil"/>
 
 	<!-- 配置定时任务开始 -->
 	<!-- 
@@ -28,7 +31,9 @@
 	 -->
 	<task:scheduled-tasks> 
 		<task:scheduled ref="catchTianyaTask" method="job1" cron="0 0/5 * * * ?"/>
+		<!-- 
 		<task:scheduled ref="sendMailTask" method="sendMail" cron="0 * * * * ?"/>
+		 -->
 	</task:scheduled-tasks>
 	
 	<!-- 加载数据库配置文件 -->

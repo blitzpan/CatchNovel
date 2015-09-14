@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
@@ -11,19 +12,44 @@ import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import freemarker.template.Template;  
+import com.novel.entity.Book;
+import com.novel.entity.UserBook;
+
+import freemarker.template.Template;
 import freemarker.template.TemplateException;
 @Component
-public class SendMailUtils {
+public class SendMailUtils extends Thread{
 	@Autowired
 	private JavaMailSender mailSender;
 	@Autowired
 	private FreeMarkerConfigurer freemarkerConfiguration;
+	private Book book;
+	private List<UserBook> ubL = null;
+	
+	
+	public SendMailUtils() {
+		super();
+	}
+	public SendMailUtils(Book book, List<UserBook> ubL) {
+		super();
+		this.book = book;
+		this.ubL = ubL;
+	}
+	@Override
+	public void run() {
+		try {
+			this.sendTemplateMail();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 单纯的文本邮件
 	 * @return
@@ -69,12 +95,24 @@ public class SendMailUtils {
 	 * @return
 	 */
 	public void sendTemplateMail() throws Exception{
+		if(mailSender == null){
+			//不用再加载springContext.xml文件,因为在web.xml中配置了,在程序中启动是就有了。
+			mailSender = (JavaMailSender) SpringContextUtil.getBean("mailSender");  
+		}
 		// 建立邮件消息,发送简单邮件和html邮件的区别  
         MimeMessage mailMessage = mailSender.createMimeMessage();  
         //这里一定要是gbk，如果是utf-8的话，会出现乱码问题
         MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage,true,"gbk");
         
-        messageHelper.setTo("1028353676@qq.com");// 接受者
+//        messageHelper.setTo("1028353676@qq.com");// 接受者
+        String toUser = "";
+        for(UserBook ub: ubL){
+        	toUser += "," + ub.getEmail();
+        }
+        if(toUser.length() > 0){
+        	toUser = toUser.substring(1);
+        }
+        messageHelper.setTo(toUser);//接受者
         messageHelper.setFrom("youxiangformajia@163.com");// 发送者,和xml中的一致
         messageHelper.setSubject("邮件测试");// 主题  
         
@@ -86,11 +124,15 @@ public class SendMailUtils {
 	}
 	private String getEmailContent() throws Exception{
 		try {
+			if(freemarkerConfiguration == null){
+				freemarkerConfiguration = (FreeMarkerConfigurer) SpringContextUtil.getBean("freemarkerConfiguration");  
+			}
 			Template template = freemarkerConfiguration.getConfiguration().getTemplate("mail.ftl");
 
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("fromName", "<a href=\"http://www.baidu.com\" target=\"_blank\">神的首页</a>");
 			map.put("sendTime", new Date().toString());
+			map.put("content", book.getContent());
 			String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
 			return content;
 
@@ -120,9 +162,5 @@ public class SendMailUtils {
 	}
 	public void setFreemarkerConfiguration(FreeMarkerConfigurer freemarkerConfiguration) {
 		this.freemarkerConfiguration = freemarkerConfiguration;
-	}
-	public static void main(String[] args) {
-        SendMailUtils mu = new SendMailUtils();
-//        mu.sendSimpleMail();
 	}
 }

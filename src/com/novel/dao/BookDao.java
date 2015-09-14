@@ -32,15 +32,14 @@ public class BookDao {
 	public List queryBooks(Book book) throws Exception{
 		String sql = "select * from book book where 1=1 ";
 		List<Object> values = new ArrayList();
-		this.makeQueryBooksSql(sql, book, values);
-		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Book.class));
+		sql += this.makeQueryBooksSql(book, values);//这里的sql必须sql="返回值"，在子方法中的改变str不会改变父方法中的Str。
+		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Book.class), values.toArray());
 	}
 	
-	private String makeQueryBooksSql(String sql, Book book, List values) throws Exception{
+	private String makeQueryBooksSql(Book book, List values) throws Exception{
 		StringBuffer sb = new StringBuffer();
 		sb.append(" and book.sendmail=" + book.getSendMail());
-		sql += sb.toString();
-		return sql;
+		return sb.toString();
 	}
 
 	public JdbcTemplate getJdbcTemplate() {
