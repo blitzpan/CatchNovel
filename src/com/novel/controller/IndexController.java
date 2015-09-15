@@ -1,7 +1,5 @@
 package com.novel.controller;
 
-import java.util.Currency;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.novel.catcher.TianyaCatcher;
 import com.novel.service.BookService;
+import com.novel.service.MailService;
 import com.novel.service.TianyaService;
 import com.novel.service.TransactionalService;
 import com.novel.util.SendMailUtils;
@@ -25,6 +24,8 @@ public class IndexController {
 	private BookService bookService;
 	@Autowired
 	private TianyaService tianyaService;
+	@Autowired
+	private MailService mailService;
 	
 	@RequestMapping("/index")
 	public ModelAndView index(){
@@ -44,7 +45,8 @@ public class IndexController {
 		try{
 //			mailUtils.sendSimpleMail();
 //			mailUtils.sendHtmlMail();
-			mailUtils.sendTemplateMail();
+//			mailUtils.sendTemplateMail();
+			mailService.sendMessage();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -84,6 +86,12 @@ public class IndexController {
 	}
 	public void setMailUtils(SendMailUtils mailUtils) {
 		this.mailUtils = mailUtils;
+	}
+	public MailService getMailService() {
+		return mailService;
+	}
+	public void setMailService(MailService mailService) {
+		this.mailService = mailService;
 	}
 
 
