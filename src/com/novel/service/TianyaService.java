@@ -34,6 +34,17 @@ public class TianyaService {
 		bookDao.addBook(book);
 		tianyaDao.updatePage(ty);
 	}
+//	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void bookDaotest() throws Exception{
+		System.out.println("bookDao=" + bookDao);
+		System.out.println("tianya.总共=" + bookDao.queryMax());
+	}
+//	@Transactional(propagation=Propagation.REQUIRES_NEW)
+//	@Transactional(propagation=Propagation.NESTED)
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+	public void tianyaDaotest() throws Exception{
+		System.out.println("tianya.总共=" + tianyaDao.queryMax());
+	}
 	
 	public BookDao getBookDao() {
 		return bookDao;

@@ -1,11 +1,15 @@
 package com.novel.controller;
 
+import java.util.Currency;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.novel.catcher.TianyaCatcher;
+import com.novel.service.BookService;
+import com.novel.service.TianyaService;
 import com.novel.service.TransactionalService;
 import com.novel.util.SendMailUtils;
 
@@ -17,6 +21,10 @@ public class IndexController {
 	private TransactionalService transactionalService;
 	@Autowired
 	private SendMailUtils mailUtils;
+	@Autowired
+	private BookService bookService;
+	@Autowired
+	private TianyaService tianyaService;
 	
 	@RequestMapping("/index")
 	public ModelAndView index(){
@@ -38,6 +46,20 @@ public class IndexController {
 //			mailUtils.sendHtmlMail();
 			mailUtils.sendTemplateMail();
 		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	@RequestMapping("/test")
+	public void test() {
+		try {
+			long begin = System.currentTimeMillis();
+			System.out.println("begin:");
+			//在Controller中的两个service操作数据库是两个事务，tianyaService中的异常并不会导致bookService的回滚
+			bookService.test();
+			System.out.println("end.spend time=" + (System.currentTimeMillis() - begin)/1000);
+//			tianyaService.test();
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

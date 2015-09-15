@@ -1,11 +1,14 @@
 package com.novel.dao;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -41,6 +44,46 @@ public class BookDao {
 		sb.append(" and book.sendmail=" + book.getSendMail());
 		sql += sb.toString();
 		return sql;
+	}
+	public void test() throws Exception{
+		String sql = "delete from book";
+		jdbcTemplate.update(sql);
+		String oldSql = "insert into book(id,bookid,content,gatherdate) values('idd','1','1',SYSDATE())";
+		for (int i = 0; i < 10000; i++) {
+			sql = oldSql.replace("idd", i+"");
+			jdbcTemplate.update(sql);
+		}
+	}
+	
+	public void batchTest() throws Exception{
+		System.out.println("jdbc = " + jdbcTemplate);
+		String sql = "delete from book";
+		jdbcTemplate.update(sql);
+		String oldSql = "insert into book(id,bookid,content,gatherdate) values(?,'1','1',SYSDATE())";
+		jdbcTemplate.batchUpdate(oldSql, new BatchPreparedStatementSetter() {
+			public void setValues(PreparedStatement pst, int i) throws SQLException {
+				pst.setString(1, i + "");
+			}
+			public int getBatchSize() {
+				
+				return 10000;
+			}
+		});
+	}
+	public int queryMax() throws Exception{
+//		String sql = "SELECT  max(cast(id as UNSIGNED int)) from book;";
+//		int max = jdbcTemplate.queryForInt(sql);
+		
+		//新增一个错误的插入，判断这里肯定会回滚，从而判断是否在同一个事务之中。
+		if(true){
+//			throw new RuntimeException("test");
+			String sql = "insert into book(id) values('1')";
+			System.out.println("jdbc = " + jdbcTemplate);
+			jdbcTemplate.update(sql);
+			
+		}
+//		return max;
+		return 0;
 	}
 
 	public JdbcTemplate getJdbcTemplate() {

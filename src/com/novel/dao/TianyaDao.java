@@ -31,6 +31,21 @@ public class TianyaDao {
 		Object[] values = new Object[]{UUID.randomUUID().toString().replace("-", "")};
 		return jdbcTemplate.update(sql, values);
 	}
+	
+	public int queryMax() throws Exception{
+//		String sql = "SELECT  max(cast(id as UNSIGNED int)) from book;";
+//		int max = jdbcTemplate.queryForInt(sql);
+		
+		//新增一个错误的插入，判断这里肯定会回滚，从而判断是否在同一个事务之中。
+		if(true){
+//			throw new RuntimeException("test");
+			String sql = "insert into book(id) values('1')";
+			jdbcTemplate.update(sql);
+			
+		}
+//		return max;
+		return 0;
+	}
 
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
