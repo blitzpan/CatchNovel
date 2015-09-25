@@ -2,3 +2,5 @@
 /WebRoot/META-INF/*
 /WebRoot/WEB-INF/classes/*
 /bin/
+.project
+.settings/
