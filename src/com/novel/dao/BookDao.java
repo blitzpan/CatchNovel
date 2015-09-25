@@ -19,11 +19,23 @@ public class BookDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	public Map addBook(Book book) throws Exception{
-		String sql = "INSERT into book(id,bookid,pagenum,`content`,gatherdate) values(?,?,?,?,SYSDATE())";
-		Object[] values = new Object[]{UUID.randomUUID().toString().replaceAll("-", ""),
-				book.getBookId(), book.getPageNum(), book.getContent()};
-		int i = jdbcTemplate.update(sql,values);
-		System.out.println("更新条数=" + i);
+		//根据书号和章节查询content长度，如果长度不一致那么update，update结果为0那么insert
+		int dbLen = 0;
+		String sql = "SELECT CHAR_LENGTH(content) from book WHERE bookId=? and pageNum=?";
+		try{
+			dbLen = jdbcTemplate.queryForInt(sql, new Object[]{book.getBookId(), book.getPageNum()});
+		}catch(Exception e){
+		}
+		if(book.getContent().length()>dbLen){
+			sql = "UPDATE book set content=?,sendMail=1 WHERE bookId=? and pageNum=?";
+			int i = jdbcTemplate.update(sql, new Object[]{book.getContent(), book.getBookId(), book.getPageNum()});
+			if(i<1){
+				sql = "INSERT into book(id,bookid,pagenum,`content`,gatherdate) values(?,?,?,?,SYSDATE())";
+				Object[] values = new Object[]{UUID.randomUUID().toString().replaceAll("-", ""),
+						book.getBookId(), book.getPageNum(), book.getContent()};
+				i = jdbcTemplate.update(sql,values);
+			}
+		}
 		return null;
 	}
 	/**
@@ -79,7 +91,6 @@ public class BookDao {
 			String sql = "insert into book(id) values('1')";
 			System.out.println("jdbc = " + jdbcTemplate);
 			jdbcTemplate.update(sql);
-			
 		}
 //		return max;
 		return 0;

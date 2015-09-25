@@ -7,12 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
@@ -105,14 +105,12 @@ public class SendMailUtils extends Thread{
         MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage,true,"gbk");
         
 //        messageHelper.setTo("1028353676@qq.com");// 接受者
-        String toUser = "";
+        String[] toUsers = new String[ubL.size()];
+        int i=0;
         for(UserBook ub: ubL){
-        	toUser += "," + ub.getEmail();
+        	toUsers[i++] = ub.getEmail(); 
         }
-        if(toUser.length() > 0){
-        	toUser = toUser.substring(1);
-        }
-        messageHelper.setTo(toUser);//接受者
+        messageHelper.setTo(toUsers);//接受者
         messageHelper.setFrom("youxiangformajia@163.com");// 发送者,和xml中的一致
         messageHelper.setSubject("邮件测试");// 主题  
         
