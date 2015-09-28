@@ -106,7 +106,7 @@ public class BookDao {
 	 * @date 2015Äê9ÔÂ28ÈÕ
 	 */
 	public int updateSendState(Book book) throws Exception{
-		String sql = "UPDATE book set sendMail=1 WHERE id=?";
+		String sql = "UPDATE book set sendMail=0 WHERE id=?";
 		return jdbcTemplate.update(sql, book.getId());
 	}
 
