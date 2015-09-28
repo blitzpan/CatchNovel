@@ -18,6 +18,7 @@ public class UserBookDao {
 		String sql = " SELECT u.id userid,u.email from user_book ub,user u "
 				+ " where ub.userid=u.id "
 				+ " and ub.sendMail=1 "
+				+ " and u.state>=1"
 				+ " and ub.bookid=?";
 		Object[] values = new Object[]{book.getBookId()};
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(UserBook.class), values);
