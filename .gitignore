@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings/
+.settings
 /WebRoot/META-INF/*
 /WebRoot/WEB-INF/classes/*
 /bin/
