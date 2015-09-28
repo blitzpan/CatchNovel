@@ -3,6 +3,8 @@ package com.novel.catcher;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,27 +19,36 @@ import com.novel.entity.Book;
 import com.novel.entity.Tianya;
 import com.novel.service.BookService;
 import com.novel.service.TianyaService;
-import com.novel.util.ComUtils;
 @Service
 public class TianyaCatcher {
 	@Autowired
 	private TianyaService tianyaService;
 	@Autowired 
 	private BookService bookService;
+	private final int threadCount = 5;
+	private ExecutorService pool = null;
+	
 	private List<Tianya> tyL = null;//天涯任务list
 	/**
 	 * 查询所有要采集的任务
 	 * @throws Exception
 	 */
-	public void queryAllTask() throws Exception{
-		tyL = tianyaService.queryAll(null);
-		System.out.println("查询所有任务开始：");
-		for(Tianya ty : tyL){
-			System.out.println("采集开始：" + ty);
-			CatchOne co = new CatchOne(ty);
-			new Thread(co).start();
+	public void queryAllTask() {
+		try{
+			tyL = tianyaService.queryAll(null);
+			System.out.println("查询所有任务开始：");
+			pool = Executors.newFixedThreadPool(threadCount);
+			for(Tianya ty : tyL){
+				System.out.println("采集开始：" + ty);
+				CatchOne co = new CatchOne(ty);
+				pool.execute(co);//都扔到线程池中去执行
+//				new Thread(co).start();
+			}
+			pool.shutdown();
+			System.out.println("查询所有任务结束。");
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		System.out.println("查询所有任务结束。");
 	}
 	class CatchOne implements Runnable{
 		Tianya ty = null;
@@ -85,6 +96,7 @@ public class TianyaCatcher {
 				ty.pageNumAdd();
 				pageNum = ty.getPageNum();
 				if(i++ == 3){//测试，3条就跳出循环
+					System.out.println("超过了三次，break。");
 					break;
 				}
 			}while(true);

@@ -95,6 +95,20 @@ public class BookDao {
 //		return max;
 		return 0;
 	}
+	/**
+	 * @Description:更新章节为已发送完成 
+	 * @param @param book
+	 * @param @return
+	 * @param @throws Exception   
+	 * @return int  
+	 * @throws
+	 * @author Panyk
+	 * @date 2015年9月28日
+	 */
+	public int updateSendState(Book book) throws Exception{
+		String sql = "UPDATE book set sendMail=1 WHERE id=?";
+		return jdbcTemplate.update(sql, book.getId());
+	}
 
 	public JdbcTemplate getJdbcTemplate() {
 		return jdbcTemplate;
