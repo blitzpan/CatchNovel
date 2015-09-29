@@ -90,6 +90,7 @@ public class TianyaCatcher {
 				book.setPageNum(pageNum);
 				book.setBookId(ty.getBookId());
 				book.setContent(content);
+				book.setUrl(url);
 				tianyaService.addBook(ty, book);
 				
 				oldPageNum = pageNum;

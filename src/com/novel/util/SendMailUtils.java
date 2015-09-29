@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.novel.entity.Book;
+import com.novel.entity.BookInfo;
 import com.novel.entity.UserBook;
 
 import freemarker.template.Template;
@@ -30,16 +30,18 @@ public class SendMailUtils extends Thread{
 	@Autowired
 	private FreeMarkerConfigurer freemarkerConfiguration;
 	private Book book;
+	private BookInfo bookInfo;
 	private List<UserBook> ubL = null;
 	
 	
 	public SendMailUtils() {
 		super();
 	}
-	public SendMailUtils(Book book, List<UserBook> ubL) {
+	public SendMailUtils(Book book, BookInfo bi, List<UserBook> ubL) {
 		super();
 		this.book = book;
 		this.ubL = ubL;
+		this.bookInfo = bi;
 	}
 	@Override
 	public void run() {
@@ -103,21 +105,27 @@ public class SendMailUtils extends Thread{
         MimeMessage mailMessage = mailSender.createMimeMessage();  
         //这里一定要是gbk，如果是utf-8的话，会出现乱码问题
         MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage,true,"gbk");
-        
-//        messageHelper.setTo("1028353676@qq.com");// 接受者
-        String[] toUsers = new String[ubL.size()];
+/*
+//		群发邮件
+		String[] toUsers = new String[ubL.size()];
         int i=0;
         for(UserBook ub: ubL){
         	toUsers[i++] = ub.getEmail(); 
         }
         messageHelper.setTo(toUsers);//接受者
+*/
         messageHelper.setFrom("youxiangformajia@163.com");// 发送者,和xml中的一致
-        messageHelper.setSubject("邮件测试");// 主题  
+        messageHelper.setSubject(bookInfo.getArticleName());// 主题  
         
         // true 表示启动HTML格式的邮件  
         messageHelper.setText(getEmailContent(), true);
-        // 发送邮件  
-        mailSender.send(mailMessage);
+//        mailSender.send(mailMessage);//群发邮件
+        
+//      一个个的发邮件
+        for(UserBook ub: ubL){
+        	messageHelper.setTo(ub.getEmail());
+        	mailSender.send(mailMessage);
+        }
         System.out.println("邮件发送成功..");  
 	}
 	private String getEmailContent() throws Exception{
@@ -128,9 +136,14 @@ public class SendMailUtils extends Thread{
 			Template template = freemarkerConfiguration.getConfiguration().getTemplate("mail.ftl");
 
 			Map<String, String> map = new HashMap<String, String>();
-			map.put("fromName", "<a href=\"http://www.baidu.com\" target=\"_blank\">神的首页</a>");
-			map.put("sendTime", new Date().toString());
+			
+			map.put("homeUrl", bookInfo.getHomeUrl());
+			map.put("title", bookInfo.getArticleName());
+			map.put("authorName", bookInfo.getAuthorName());
+			map.put("sendTime", book.getGatherDate());
 			map.put("content", book.getContent());
+			map.put("url", book.getUrl());
+			map.put("fromName", "<a href=\""+bookInfo.getHomeUrl()+"\" target=\"_blank\">神的首页</a>");
 			String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
 			return content;
 

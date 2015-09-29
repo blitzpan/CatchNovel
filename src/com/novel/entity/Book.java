@@ -5,6 +5,7 @@ public class Book {
 	private String bookId;
 	private String pageNum;
 	private String content;
+	private String url;
 	private String gatherDate;
 	private int sendMail;
 		
@@ -48,5 +49,11 @@ public class Book {
 	}
 	public void setSendMail(int sendMail) {
 		this.sendMail = sendMail;
+	}
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

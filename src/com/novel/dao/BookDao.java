@@ -30,9 +30,9 @@ public class BookDao {
 			sql = "UPDATE book set content=?,sendMail=1 WHERE bookId=? and pageNum=?";
 			int i = jdbcTemplate.update(sql, new Object[]{book.getContent(), book.getBookId(), book.getPageNum()});
 			if(i<1){
-				sql = "INSERT into book(id,bookid,pagenum,`content`,gatherdate) values(?,?,?,?,SYSDATE())";
+				sql = "INSERT into book(id,bookid,pagenum,`content`,url,gatherdate) values(?,?,?,?,?,SYSDATE())";
 				Object[] values = new Object[]{UUID.randomUUID().toString().replaceAll("-", ""),
-						book.getBookId(), book.getPageNum(), book.getContent()};
+						book.getBookId(), book.getPageNum(), book.getContent(),book.getUrl()};
 				i = jdbcTemplate.update(sql,values);
 			}
 		}
@@ -45,7 +45,7 @@ public class BookDao {
 	 * @throws Exception
 	 */
 	public List queryBooks(Book book) throws Exception{
-		String sql = "select * from book book where 1=1 ";
+		String sql = "SELECT b.id,b.bookid,b.url,b.pageNum,b.content,DATE_FORMAT(b.gatherDate,'%Y-%c-%e %T') gatherDate,b.sendMail from book b where 1=1 ";
 		List<Object> values = new ArrayList();
 		sql += this.makeQueryBooksSql(book, values);//这里的sql必须sql="返回值"，在子方法中的改变str不会改变父方法中的Str。
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Book.class), values.toArray());
@@ -53,7 +53,7 @@ public class BookDao {
 	
 	private String makeQueryBooksSql(Book book, List values) throws Exception{
 		StringBuffer sb = new StringBuffer();
-		sb.append(" and book.sendmail=" + book.getSendMail());
+		sb.append(" and b.sendmail=" + book.getSendMail());
 		return sb.toString();
 	}
 	public void test() throws Exception{
