@@ -42,17 +42,18 @@ public class BookService {
 		System.out.println("normal insert end. spend time = " + (System.currentTimeMillis() - begin) / 1000.0 );
 //		System.out.println("总共=" + bookDao.queryMax());
 		begin = System.currentTimeMillis();
+		/*&
 		System.out.println("batch insert begin:");
 		bookDao.batchTest();
 		System.out.println("batch insert end. spend time = " + (System.currentTimeMillis() - begin) / 1000.0 );
-		
+		*/
 //		System.out.println("总共=" + bookDao.queryMax());
 		
 		System.out.println("bookDao=" + bookDao);
 		//这里调用tianyaService来判断是否是一个事务
 		//一、bookDaotest设置事务传播机制为REQUIRES_NEW，这里如果把异常抛了出来，那么bookService.test接收到异常，就会回滚
 		//而如果这里用一个try-catch，没有抛出异常，bookService.test就不会回滚
-//		tianyaService.bookDaotest();
+		tianyaService.bookDaotest();
 		/*try {
 			tianyaService.bookDaotest();
 		} catch (Exception e) {

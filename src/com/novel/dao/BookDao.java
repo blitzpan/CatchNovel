@@ -60,7 +60,7 @@ public class BookDao {
 		String sql = "delete from book";
 		jdbcTemplate.update(sql);
 		String oldSql = "insert into book(id,bookid,content,gatherdate) values('idd','1','1',SYSDATE())";
-		for (int i = 0; i < 10000; i++) {
+		for (int i = 0; i < 1; i++) {
 			sql = oldSql.replace("idd", i+"");
 			jdbcTemplate.update(sql);
 		}

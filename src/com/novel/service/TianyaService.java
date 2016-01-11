@@ -36,8 +36,11 @@ public class TianyaService {
 	}
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void bookDaotest() throws Exception{
+		throw new RuntimeException("Òì³£");
+		/*
 		System.out.println("bookDao=" + bookDao);
 		System.out.println("tianya.×Ü¹²=" + bookDao.queryMax());
+		*/
 	}
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 //	@Transactional(propagation=Propagation.NESTED)
