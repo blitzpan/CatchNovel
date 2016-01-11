@@ -6,3 +6,4 @@
 /WebRoot/WEB-INF/classes/*
 /bin/
 .gitignore~
+classes/
