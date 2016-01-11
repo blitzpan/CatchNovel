@@ -21,7 +21,7 @@ public class BookService {
 	@Autowired
 	private TianyaService tianyaService;
 	/**
-	 * ·ÇÊÂÎñ·½Ê½ÔËĞĞ£¬¶ÁÈ¡ÒÑ¾­commitµÄÊı¾İ
+	 * éäº‹åŠ¡æ–¹å¼è¿è¡Œï¼Œè¯»å–å·²ç»commitçš„æ•°æ®
 	 * @param book
 	 * @return
 	 * @throws Exception
@@ -33,26 +33,26 @@ public class BookService {
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void addBook(String id) throws Exception{
-		System.out.println("²åÈëÊı¾İ=" + id);
+		System.out.println("æ’å…¥æ•°æ®=" + id);
 	}
 	public void test() throws Exception{
 		long begin = System.currentTimeMillis();
 		System.out.println("normal insert begin:");
 		bookDao.test();
 		System.out.println("normal insert end. spend time = " + (System.currentTimeMillis() - begin) / 1000.0 );
-//		System.out.println("×Ü¹²=" + bookDao.queryMax());
+//		System.out.println("æ€»å…±=" + bookDao.queryMax());
 		begin = System.currentTimeMillis();
 		/*&
 		System.out.println("batch insert begin:");
 		bookDao.batchTest();
 		System.out.println("batch insert end. spend time = " + (System.currentTimeMillis() - begin) / 1000.0 );
 		*/
-//		System.out.println("×Ü¹²=" + bookDao.queryMax());
+//		System.out.println("æ€»å…±=" + bookDao.queryMax());
 		
 		System.out.println("bookDao=" + bookDao);
-		//ÕâÀïµ÷ÓÃtianyaServiceÀ´ÅĞ¶ÏÊÇ·ñÊÇÒ»¸öÊÂÎñ
-		//Ò»¡¢bookDaotestÉèÖÃÊÂÎñ´«²¥»úÖÆÎªREQUIRES_NEW£¬ÕâÀïÈç¹û°ÑÒì³£Å×ÁË³öÀ´£¬ÄÇÃ´bookService.test½ÓÊÕµ½Òì³££¬¾Í»á»Ø¹ö
-		//¶øÈç¹ûÕâÀïÓÃÒ»¸ötry-catch£¬Ã»ÓĞÅ×³öÒì³££¬bookService.test¾Í²»»á»Ø¹ö
+		//è¿™é‡Œè°ƒç”¨tianyaServiceæ¥åˆ¤æ–­æ˜¯å¦æ˜¯ä¸€ä¸ªäº‹åŠ¡
+		//ä¸€ã€bookDaotestè®¾ç½®äº‹åŠ¡ä¼ æ’­æœºåˆ¶ä¸ºREQUIRES_NEWï¼Œè¿™é‡Œå¦‚æœæŠŠå¼‚å¸¸æŠ›äº†å‡ºæ¥ï¼Œé‚£ä¹ˆbookService.testæ¥æ”¶åˆ°å¼‚å¸¸ï¼Œå°±ä¼šå›æ»š
+		//è€Œå¦‚æœè¿™é‡Œç”¨ä¸€ä¸ªtry-catchï¼Œæ²¡æœ‰æŠ›å‡ºå¼‚å¸¸ï¼ŒbookService.testå°±ä¸ä¼šå›æ»š
 		tianyaService.bookDaotest();
 		/*try {
 			tianyaService.bookDaotest();
@@ -60,34 +60,34 @@ public class BookService {
 			
 		}*/
 		//REQUIRES_NEW
-//		tianyaService.tianyaDaotest();//REQUIRES_NEWÕâÊ±ºò»á»Ø¹ö¡£ÉèÖÃÊÂÎñ´«²¥»úÖÆÎªREQUIRES_NEW£¬ÕâÀïÈç¹û°ÑÒì³£Å×ÁË³öÀ´£¬ÄÇÃ´bookService.test½ÓÊÕµ½Òì³££¬¾Í»á»Ø¹ö
+//		tianyaService.tianyaDaotest();//REQUIRES_NEWè¿™æ—¶å€™ä¼šå›æ»šã€‚è®¾ç½®äº‹åŠ¡ä¼ æ’­æœºåˆ¶ä¸ºREQUIRES_NEWï¼Œè¿™é‡Œå¦‚æœæŠŠå¼‚å¸¸æŠ›äº†å‡ºæ¥ï¼Œé‚£ä¹ˆbookService.testæ¥æ”¶åˆ°å¼‚å¸¸ï¼Œå°±ä¼šå›æ»š
 		/*try {
 		 //REQUIRES_NEW
-			tianyaService.tianyaDaotest();//REQUIRES_NEWÕâÊ±ºòÈç¹ûÕâÀïÓÃÒ»¸ötry-catch£¬Ã»ÓĞÅ×³öÒì³££¬bookService.test¾Í ²»»á »Ø¹ö
+			tianyaService.tianyaDaotest();//REQUIRES_NEWè¿™æ—¶å€™å¦‚æœè¿™é‡Œç”¨ä¸€ä¸ªtry-catchï¼Œæ²¡æœ‰æŠ›å‡ºå¼‚å¸¸ï¼ŒbookService.testå°± ä¸ä¼š å›æ»š
 		} catch (Exception e) {
 			// TODO: handle exception
 		}*/
 		//REQUIRES
-//		tianyaService.tianyaDaotest();//tianyaDaotestÃ»ÓĞÉèÖÃÊÂÎñ£¬Ä¬ÈÏREQUIRES£¬ÕâÊ±ºò»á»Ø¹ö
+//		tianyaService.tianyaDaotest();//tianyaDaotestæ²¡æœ‰è®¾ç½®äº‹åŠ¡ï¼Œé»˜è®¤REQUIRESï¼Œè¿™æ—¶å€™ä¼šå›æ»š
 		/*try {
 			//REQUIRES
-			tianyaService.tianyaDaotest();//tianyaDaotestÃ»ÓĞÉèÖÃÊÂÎñ£¬Ä¬ÈÏREQUIRES£¬ÕâÊ±ºòÒ²»á»Ø¹ö
+			tianyaService.tianyaDaotest();//tianyaDaotestæ²¡æœ‰è®¾ç½®äº‹åŠ¡ï¼Œé»˜è®¤REQUIRESï¼Œè¿™æ—¶å€™ä¹Ÿä¼šå›æ»š
 		} catch (Exception e) {
 			// TODO: handle exception
 		}*/
-		//NESTED£ºÍâ²ãÊÂÎñÊ§°ÜÊ±£¬»á»Ø¹öÄÚ²ãÊÂÎñËù×öµÄ¶¯×÷¡£¶øÄÚ²ãÊÂÎñ²Ù×÷Ê§°Ü²¢²»»áÒıÆğÍâ²ãÊÂÎñµÄ»Ø¹ö
-//		tianyaService.tianyaDaotest();//tianyaDaotest£¬Íâ²ã»á»Ø¹ö
+		//NESTEDï¼šå¤–å±‚äº‹åŠ¡å¤±è´¥æ—¶ï¼Œä¼šå›æ»šå†…å±‚äº‹åŠ¡æ‰€åšçš„åŠ¨ä½œã€‚è€Œå†…å±‚äº‹åŠ¡æ“ä½œå¤±è´¥å¹¶ä¸ä¼šå¼•èµ·å¤–å±‚äº‹åŠ¡çš„å›æ»š
+//		tianyaService.tianyaDaotest();//tianyaDaotestï¼Œå¤–å±‚ä¼šå›æ»š
 		/*try {
 			//NESTED
-			tianyaService.tianyaDaotest();////tianyaDaotest£¬ÄÚ²ãÊ§°Ü£¬Íâ²ã    ²»»á    »Ø¹ö
+			tianyaService.tianyaDaotest();////tianyaDaotestï¼Œå†…å±‚å¤±è´¥ï¼Œå¤–å±‚    ä¸ä¼š    å›æ»š
 		} catch (Exception e) {
 			// TODO: handle exception
 		}*/
 		//NOT_SUPPORTED
-//		tianyaService.tianyaDaotest();//tianyaDaotest£¬Íâ²ã»á»Ø¹ö
+//		tianyaService.tianyaDaotest();//tianyaDaotestï¼Œå¤–å±‚ä¼šå›æ»š
 		try {
 			//NOT_SUPPORTED
-			tianyaService.tianyaDaotest();////tianyaDaotest£¬ÄÚ²ãÊ§°Ü£¬Íâ²ã    ²»»á    »Ø¹ö
+			tianyaService.tianyaDaotest();////tianyaDaotestï¼Œå†…å±‚å¤±è´¥ï¼Œå¤–å±‚    ä¸ä¼š    å›æ»š
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

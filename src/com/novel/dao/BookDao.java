@@ -19,7 +19,7 @@ public class BookDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	public Map addBook(Book book) throws Exception{
-		//¸ù¾İÊéºÅºÍÕÂ½Ú²éÑ¯content³¤¶È£¬Èç¹û³¤¶È²»Ò»ÖÂÄÇÃ´update£¬update½á¹ûÎª0ÄÇÃ´insert
+		//æ ¹æ®ä¹¦å·å’Œç« èŠ‚æŸ¥è¯¢contenté•¿åº¦ï¼Œå¦‚æœé•¿åº¦ä¸ä¸€è‡´é‚£ä¹ˆupdateï¼Œupdateç»“æœä¸º0é‚£ä¹ˆinsert
 		int dbLen = 0;
 		String sql = "SELECT CHAR_LENGTH(content) from book WHERE bookId=? and pageNum=?";
 		try{
@@ -39,7 +39,7 @@ public class BookDao {
 		return null;
 	}
 	/**
-	 * ²éÑ¯ËùÓĞÂú×ãÌõ¼şµÄÕÂ½Ú
+	 * æŸ¥è¯¢æ‰€æœ‰æ»¡è¶³æ¡ä»¶çš„ç« èŠ‚
 	 * @param book
 	 * @return
 	 * @throws Exception
@@ -47,7 +47,7 @@ public class BookDao {
 	public List queryBooks(Book book) throws Exception{
 		String sql = "SELECT b.id,b.bookid,b.url,b.pageNum,b.content,DATE_FORMAT(b.gatherDate,'%Y-%c-%e %T') gatherDate,b.sendMail from book b where 1=1 ";
 		List<Object> values = new ArrayList();
-		sql += this.makeQueryBooksSql(book, values);//ÕâÀïµÄsql±ØĞësql="·µ»ØÖµ"£¬ÔÚ×Ó·½·¨ÖĞµÄ¸Ä±ästr²»»á¸Ä±ä¸¸·½·¨ÖĞµÄStr¡£
+		sql += this.makeQueryBooksSql(book, values);//è¿™é‡Œçš„sqlå¿…é¡»sql="è¿”å›å€¼"ï¼Œåœ¨å­æ–¹æ³•ä¸­çš„æ”¹å˜strä¸ä¼šæ”¹å˜çˆ¶æ–¹æ³•ä¸­çš„Strã€‚
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Book.class), values.toArray());
 	}
 	
@@ -85,7 +85,7 @@ public class BookDao {
 //		String sql = "SELECT  max(cast(id as UNSIGNED int)) from book;";
 //		int max = jdbcTemplate.queryForInt(sql);
 		
-		//ĞÂÔöÒ»¸ö´íÎóµÄ²åÈë£¬ÅĞ¶ÏÕâÀï¿Ï¶¨»á»Ø¹ö£¬´Ó¶øÅĞ¶ÏÊÇ·ñÔÚÍ¬Ò»¸öÊÂÎñÖ®ÖĞ¡£
+		//æ–°å¢ä¸€ä¸ªé”™è¯¯çš„æ’å…¥ï¼Œåˆ¤æ–­è¿™é‡Œè‚¯å®šä¼šå›æ»šï¼Œä»è€Œåˆ¤æ–­æ˜¯å¦åœ¨åŒä¸€ä¸ªäº‹åŠ¡ä¹‹ä¸­ã€‚
 		if(true){
 //			throw new RuntimeException("test");
 			String sql = "insert into book(id) values('1')";
@@ -96,14 +96,14 @@ public class BookDao {
 		return 0;
 	}
 	/**
-	 * @Description:¸üĞÂÕÂ½ÚÎªÒÑ·¢ËÍÍê³É 
+	 * @Description:æ›´æ–°ç« èŠ‚ä¸ºå·²å‘é€å®Œæˆ 
 	 * @param @param book
 	 * @param @return
 	 * @param @throws Exception   
 	 * @return int  
 	 * @throws
 	 * @author Panyk
-	 * @date 2015Äê9ÔÂ28ÈÕ
+	 * @date 2015å¹´9æœˆ28æ—¥
 	 */
 	public int updateSendState(Book book) throws Exception{
 		String sql = "UPDATE book set sendMail=0 WHERE id=?";

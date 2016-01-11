@@ -5,19 +5,19 @@ public class Test {
 	private static Logger logger = Logger.getLogger(Test.class);
 
 	public void run() {
-		// ¼ÇÂ¼debug¼¶±ğµÄĞÅÏ¢
+		// è®°å½•debugçº§åˆ«çš„ä¿¡æ¯
 		logger.debug("This is debug message.");
-		// ¼ÇÂ¼info¼¶±ğµÄĞÅÏ¢
+		// è®°å½•infoçº§åˆ«çš„ä¿¡æ¯
 		logger.info("This is info message.");
-		// ¼ÇÂ¼error¼¶±ğµÄĞÅÏ¢
+		// è®°å½•errorçº§åˆ«çš„ä¿¡æ¯
 		logger.error("This is error message.");
 		try{
 			int i = 5/0;
 		}catch(Exception e){
-			logger.error("´òÓ¡getMessage=" + e.getMessage());
-			logger.error("´òÓ¡getStackTrace=" + e.getStackTrace());
-			logger.error("´òÓ¡e=" + e);
-			logger.error("´òÓ¡error(e,e)=");
+			logger.error("æ‰“å°getMessage=" + e.getMessage());
+			logger.error("æ‰“å°getStackTrace=" + e.getStackTrace());
+			logger.error("æ‰“å°e=" + e);
+			logger.error("æ‰“å°error(e,e)=");
 			logger.error(e, e);
 		}
 	}

@@ -28,24 +28,24 @@ public class TianyaCatcher {
 	private final int threadCount = 5;
 	private ExecutorService pool = null;
 	
-	private List<Tianya> tyL = null;//ÌìÑÄÈÎÎñlist
+	private List<Tianya> tyL = null;//å¤©æ¶¯ä»»åŠ¡list
 	/**
-	 * ²éÑ¯ËùÓĞÒª²É¼¯µÄÈÎÎñ
+	 * æŸ¥è¯¢æ‰€æœ‰è¦é‡‡é›†çš„ä»»åŠ¡
 	 * @throws Exception
 	 */
 	public void queryAllTask() {
 		try{
 			tyL = tianyaService.queryAll(null);
-			System.out.println("²éÑ¯ËùÓĞÈÎÎñ¿ªÊ¼£º");
+			System.out.println("æŸ¥è¯¢æ‰€æœ‰ä»»åŠ¡å¼€å§‹ï¼š");
 			pool = Executors.newFixedThreadPool(threadCount);
 			for(Tianya ty : tyL){
-				System.out.println("²É¼¯¿ªÊ¼£º" + ty);
+				System.out.println("é‡‡é›†å¼€å§‹ï¼š" + ty);
 				CatchOne co = new CatchOne(ty);
-				pool.execute(co);//¶¼ÈÓµ½Ïß³Ì³ØÖĞÈ¥Ö´ĞĞ
+				pool.execute(co);//éƒ½æ‰”åˆ°çº¿ç¨‹æ± ä¸­å»æ‰§è¡Œ
 //				new Thread(co).start();
 			}
 			pool.shutdown();
-			System.out.println("²éÑ¯ËùÓĞÈÎÎñ½áÊø¡£");
+			System.out.println("æŸ¥è¯¢æ‰€æœ‰ä»»åŠ¡ç»“æŸã€‚");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -62,13 +62,13 @@ public class TianyaCatcher {
 	}
 
 	/**
-	 * ²É¼¯Ò»¸ö
+	 * é‡‡é›†ä¸€ä¸ª
 	 * @param ty
 	 */
 	private void catchOne(Tianya ty){
-		Document doc = null;//Ò»¸öÒ³Ãæ
-		String oldPageNum = "";//³õÊ¼»¯µÄpageNum
-		String pageNum = "";//Ò³Âë
+		Document doc = null;//ä¸€ä¸ªé¡µé¢
+		String oldPageNum = "";//åˆå§‹åŒ–çš„pageNum
+		String pageNum = "";//é¡µç 
 		String content = "";
 		try{
 			String url = "";
@@ -78,15 +78,15 @@ public class TianyaCatcher {
 			do{
 				book = new Book();
 				url = ty.getRealUrl();
-				//µÚÒ»´Î»ñÈ¡
+				//ç¬¬ä¸€æ¬¡è·å–
 				doc = getDocByUrl(url);
 				pageNum = getPageNum(doc);
-				if(pageNum.equals(oldPageNum)){//ÒÑ¾­×¥È¡¹ıÁË£¬²»´¦Àí
+				if(pageNum.equals(oldPageNum)){//å·²ç»æŠ“å–è¿‡äº†ï¼Œä¸å¤„ç†
 					break;
 				}
 				content = getContent(ty,doc);
-				System.out.println("×¥È¡µ½µÚ¡¾"+pageNum+"¡¿Ò³µÄÄÚÈİ=\n" + content);
-				//×¥È¡µÄÄÚÈİÈë¿â
+				System.out.println("æŠ“å–åˆ°ç¬¬ã€"+pageNum+"ã€‘é¡µçš„å†…å®¹=\n" + content);
+				//æŠ“å–çš„å†…å®¹å…¥åº“
 				book.setPageNum(pageNum);
 				book.setBookId(ty.getBookId());
 				book.setContent(content);
@@ -96,8 +96,8 @@ public class TianyaCatcher {
 				oldPageNum = pageNum;
 				ty.pageNumAdd();
 				pageNum = ty.getPageNum();
-				if(i++ == 3){//²âÊÔ£¬3Ìõ¾ÍÌø³öÑ­»·
-					System.out.println("³¬¹ıÁËÈı´Î£¬break¡£");
+				if(i++ == 3){//æµ‹è¯•ï¼Œ3æ¡å°±è·³å‡ºå¾ªç¯
+					System.out.println("è¶…è¿‡äº†ä¸‰æ¬¡ï¼Œbreakã€‚");
 					break;
 				}
 			}while(true);
@@ -111,7 +111,7 @@ public class TianyaCatcher {
 		try{
 			doc = Jsoup.connect(url).timeout(1000*60).get();
 //			this.writeToFile(doc.toString());
-			System.out.println("Íê³É");
+			System.out.println("å®Œæˆ");
 		}catch(Exception e){
 			e.printStackTrace();
 			throw e;
@@ -120,10 +120,10 @@ public class TianyaCatcher {
 	}
 
 	private String getContent(Tianya ty, Document doc) throws Exception{
-		StringBuffer sb = new StringBuffer();//±¾Ò³µÄËùÓĞÄÚÈİ
+		StringBuffer sb = new StringBuffer();//æœ¬é¡µçš„æ‰€æœ‰å†…å®¹
 		Elements mainElements = null;
 		Elements atlItems = doc.getElementsByClass("atl-item");
-		if(ty.getPageNum().equals("1")){//Èç¹ûÊÇÊ×Ò³£¬ÄÇÃ´1Â¥µ¥¶À´¦Àí
+		if(ty.getPageNum().equals("1")){//å¦‚æœæ˜¯é¦–é¡µï¼Œé‚£ä¹ˆ1æ¥¼å•ç‹¬å¤„ç†
 			mainElements = doc.getElementsByClass("atl-main");
 		}
 		Element mainE = null;
@@ -141,8 +141,8 @@ public class TianyaCatcher {
 		return sb.toString();
 	}
 	private String getPageNum(Document doc) throws Exception{
-//		doc.baseUri()¡¢doc.location()»ñÈ¡ÖØ¶¨ÏòÖ®ºóµÄÒ³ÃæµØÖ·¡£
-//		Èç100000Ò³·µ»ØµÄÊÇ£ºhttp://bbs.tianya.cn/post-16-1150797-132.shtml
+//		doc.baseUri()ã€doc.location()è·å–é‡å®šå‘ä¹‹åçš„é¡µé¢åœ°å€ã€‚
+//		å¦‚100000é¡µè¿”å›çš„æ˜¯ï¼šhttp://bbs.tianya.cn/post-16-1150797-132.shtml
 		String pageNum = "";
 		String redirectUrl = doc.baseUri();
 		Pattern p = Pattern.compile("\\d+\\.shtml");
@@ -185,7 +185,7 @@ public class TianyaCatcher {
 
 	public static void main(String[] args) {
 		String url = "http://bbs.tianya.cn/post-16-1150797-3.shtml";
-		System.out.println(url + "µÄÄÚÈİ£º");
+		System.out.println(url + "çš„å†…å®¹ï¼š");
 		TianyaCatcher t = new TianyaCatcher();
 		try {
 			t.getDocByUrl(url);

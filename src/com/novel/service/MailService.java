@@ -28,7 +28,7 @@ public class MailService {
 	private BookInfoDao bookInfoDao;
 	
 	/**
-	 * ·ÇÊÂÎñ·½Ê½ÔËĞĞ£¬¶ÁÈ¡ÒÑ¾­commitµÄÊı¾İ
+	 * éäº‹åŠ¡æ–¹å¼è¿è¡Œï¼Œè¯»å–å·²ç»commitçš„æ•°æ®
 	 * @param book
 	 * @return
 	 * @throws Exception
@@ -40,8 +40,8 @@ public class MailService {
 			List<BookInfo> biL = null;
 			Book parm = new Book();
 			parm.setSendMail(1);
-			List<Book> bookL = bookDao.queryBooks(parm);//²éÑ¯ËùÓĞĞèÒª·¢ËÍµÄÕÂ½ÚĞÅÏ¢
-//			²éÑ¯ËùÓĞÊé¼®ĞÅÏ¢
+			List<Book> bookL = bookDao.queryBooks(parm);//æŸ¥è¯¢æ‰€æœ‰éœ€è¦å‘é€çš„ç« èŠ‚ä¿¡æ¯
+//			æŸ¥è¯¢æ‰€æœ‰ä¹¦ç±ä¿¡æ¯
 			biL = bookInfoDao.queryAllBookInfos();
 			BookInfo tempBi = null;
 			int index = 0;
@@ -49,7 +49,7 @@ public class MailService {
 				ubL = userBookDao.queryUserBook(book);
 				System.out.println("book=" + book);
 				System.out.println("ubL = "+ubL);
-				//²éÑ¯Òª·¢ËÍµÄÕâ±¾Êé¼®µÄĞÅÏ¢
+				//æŸ¥è¯¢è¦å‘é€çš„è¿™æœ¬ä¹¦ç±çš„ä¿¡æ¯
 				tempBi = new BookInfo();
 				tempBi.setBookId(book.getBookId());
 				index = biL.indexOf(tempBi);
@@ -58,7 +58,7 @@ public class MailService {
 				}
 				System.out.println("bookInfo = " + tempBi);
 				new SendMailUtils(book, tempBi, ubL).start();
-				//·¢ËÍÍê³É¸Ä×´Ì¬
+				//å‘é€å®Œæˆæ”¹çŠ¶æ€
 				bookDao.updateSendState(book);
 			}
 			log.info("SendMessage over.");

@@ -11,14 +11,14 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
-	<!-- é…ç½®å‚è€ƒæ–‡ç« ï¼šhttp://www.cnblogs.com/yangzhilong/p/3724934.html -->
-	<!-- Spring MVCé…ç½® -->
+	<!-- ÅäÖÃ²Î¿¼ÎÄÕÂ£ºhttp://www.cnblogs.com/yangzhilong/p/3724934.html -->
+	<!-- Spring MVCÅäÖÃ -->
 	<context:annotation-config></context:annotation-config>
-	<!-- æ‰«ææ³¨è§£ -->
+	<!-- É¨Ãè×¢½â -->
 	<context:component-scan base-package="com.novel"></context:component-scan>
-	<!-- é»˜è®¤çš„mvcæ³¨è§£æ˜ å°„æ”¯æŒ -->
+	<!-- Ä¬ÈÏµÄmvc×¢½âÓ³ÉäÖ§³Ö -->
 	<mvc:annotation-driven></mvc:annotation-driven>
-	<!-- è§†å›¾è§£æžå™¨å’Œjsonè§£æžå™¨ -->
+	<!-- ÊÓÍ¼½âÎöÆ÷ºÍjson½âÎöÆ÷ -->
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="mediaTypes">
 			<map>
@@ -29,7 +29,7 @@
 		<property name="viewResolvers">
             <list>
                 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-                    <property name="prefix" value="/jsp/" /> <!--å¯ä¸ºç©º,æ–¹ä¾¿å®žçŽ°è‡ªå·²çš„ä¾æ®æ‰©å±•åæ¥é€‰æ‹©è§†å›¾è§£é‡Šç±»çš„é€»è¾‘ -->
+                    <property name="prefix" value="/jsp/" /> <!--¿ÉÎª¿Õ,·½±ãÊµÏÖ×ÔÒÑµÄÒÀ¾ÝÀ©Õ¹ÃûÀ´Ñ¡ÔñÊÓÍ¼½âÊÍÀàµÄÂß¼­ -->
                     <property name="suffix" value=".jsp"/>
                 </bean>
             </list>
@@ -42,14 +42,14 @@
         </property>
          -->
 	</bean>
-	<!-- æ–‡ä»¶ä¸Šä¼ è§£æžå™¨ -->
+	<!-- ÎÄ¼þÉÏ´«½âÎöÆ÷ -->
 	<!-- 
     <bean id="multipartResolver"
         class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
             <property name="maxUploadSize" value="-1"/>
     </bean>
  	-->
-    <!-- æ€»é”™è¯¯å¤„ç† -->
+    <!-- ×Ü´íÎó´¦Àí -->
     <bean id="exceptionResolver"
         class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="defaultErrorView">
@@ -63,15 +63,15 @@
             </value>
         </property>
     </bean>
-    <!-- å¯¹é™æ€èµ„æºæ–‡ä»¶çš„è®¿é—® -->
+    <!-- ¶Ô¾²Ì¬×ÊÔ´ÎÄ¼þµÄ·ÃÎÊ -->
     <mvc:resources mapping="/images/**" location="/images/" cache-period="31556926" />
     <mvc:resources mapping="/js/**" location="/js/" cache-period="31556926" />
     <mvc:resources mapping="/css/**" location="/css/" cache-period="31556926" />
-    <!-- æ•°æ®åº“å’Œäº‹åŠ¡é…ç½® -->
+    <!-- Êý¾Ý¿âºÍÊÂÎñÅäÖÃ -->
 
-    <!-- åŠ è½½é…ç½®æ–‡ä»¶ -->
+    <!-- ¼ÓÔØÅäÖÃÎÄ¼þ -->
     <context:property-placeholder location="classpath:jdbc.properties" />
-    <!-- å®šä¹‰æ•°æ®æº -->
+    <!-- ¶¨ÒåÊý¾ÝÔ´ -->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
         destroy-method="close">
         <property name="driverClass">
@@ -86,24 +86,24 @@
         <property name="password">
             <value>${jdbc.password}</value>
         </property>
-        <!--è¿žæŽ¥æ± ä¸­ä¿ç•™çš„æœ€å°è¿žæŽ¥æ•°ã€‚ -->
+        <!--Á¬½Ó³ØÖÐ±£ÁôµÄ×îÐ¡Á¬½ÓÊý¡£ -->
         <property name="minPoolSize">
             <value>${c3p0.minPoolSize}</value>
         </property>
-        <!--è¿žæŽ¥æ± ä¸­ä¿ç•™çš„æœ€å¤§è¿žæŽ¥æ•°ã€‚Default: 15 -->
+        <!--Á¬½Ó³ØÖÐ±£ÁôµÄ×î´óÁ¬½ÓÊý¡£Default: 15 -->
         <property name="maxPoolSize">
             <value>${c3p0.maxPoolSize}</value>
         </property>
-        <!--åˆå§‹åŒ–æ—¶èŽ·å–çš„è¿žæŽ¥æ•°ï¼Œå–å€¼åº”åœ¨minPoolSizeä¸ŽmaxPoolSizeä¹‹é—´ã€‚Default: 3 -->
+        <!--³õÊ¼»¯Ê±»ñÈ¡µÄÁ¬½ÓÊý£¬È¡ÖµÓ¦ÔÚminPoolSizeÓëmaxPoolSizeÖ®¼ä¡£Default: 3 -->
         <property name="initialPoolSize">
             <value>${c3p0.initialPoolSize}</value>
         </property>
-        <!--æ¯30ç§’æ£€æŸ¥æ‰€æœ‰è¿žæŽ¥æ± ä¸­çš„ç©ºé—²è¿žæŽ¥ã€‚Default: 0 -->
+        <!--Ã¿30Ãë¼ì²éËùÓÐÁ¬½Ó³ØÖÐµÄ¿ÕÏÐÁ¬½Ó¡£Default: 0 -->
         <property name="idleConnectionTestPeriod">
             <value>${c3p0.idleConnectionTestPeriod}</value>
         </property>
     </bean>
-    <!-- weblogicæŽ¨èä½¿ç”¨jndiè¿žæŽ¥æ±  -->
+    <!-- weblogicÍÆ¼öÊ¹ÓÃjndiÁ¬½Ó³Ø -->
     <!-- 
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
         <property name="jndiName"> 
@@ -112,7 +112,7 @@
     </bean> 
     -->
 
-    <!-- å®šä¹‰jdbcTemplate -->
+    <!-- ¶¨ÒåjdbcTemplate -->
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource">
             <ref bean="dataSource"/>
@@ -122,7 +122,7 @@
         <constructor-arg><ref bean="dataSource"/></constructor-arg> 
     </bean>
 
-    <!-- å®šä¹‰äº‹åŠ¡ç®¡ç†å™¨ -->
+    <!-- ¶¨ÒåÊÂÎñ¹ÜÀíÆ÷ -->
     <bean id="transactionManager"
         class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource">
@@ -130,7 +130,7 @@
         </property>
     </bean>
 
-    <!-- é…ç½®äº‹åŠ¡ç‰¹æ€§ ï¼Œé…ç½®addã€deleteå’Œupdateå¼€å§‹çš„æ–¹æ³•ï¼Œäº‹åŠ¡ä¼ æ’­ç‰¹æ€§ä¸ºrequired -->
+    <!-- ÅäÖÃÊÂÎñÌØÐÔ £¬ÅäÖÃadd¡¢deleteºÍupdate¿ªÊ¼µÄ·½·¨£¬ÊÂÎñ´«²¥ÌØÐÔÎªrequired -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="save*" propagation="REQUIRED" />
@@ -143,7 +143,7 @@
         </tx:attributes>
     </tx:advice>
 
-    <!-- é…ç½®é‚£äº›ç±»çš„æ–¹æ³•è¿›è¡Œäº‹åŠ¡ç®¡ç† -->
+    <!-- ÅäÖÃÄÇÐ©ÀàµÄ·½·¨½øÐÐÊÂÎñ¹ÜÀí -->
     <aop:config>
         <aop:pointcut id="allManagerMethod" expression="execution (* com.tf.*.service.*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />
@@ -152,17 +152,17 @@
     
 	
 	<!-- HandlerMapping -->
-	<!-- ä»¥å‰çš„å…¨éƒ¨æ³¨é‡Š -->
+	<!-- ÒÔÇ°µÄÈ«²¿×¢ÊÍ -->
 	<!-- 
     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
      -->
     <!-- HandlerAdapter -->
-    <!-- ä»¥å‰çš„å…¨éƒ¨æ³¨é‡Š -->
+    <!-- ÒÔÇ°µÄÈ«²¿×¢ÊÍ -->
 	<!--
     <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
     -->
     <!-- ViewResolver -->
-    <!-- ä»¥å‰çš„å…¨éƒ¨æ³¨é‡Š -->
+    <!-- ÒÔÇ°µÄÈ«²¿×¢ÊÍ -->
 	<!-- 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
@@ -170,8 +170,8 @@
         <property name="suffix" value=".jsp"/>
     </bean>
      -->
-    <!-- å¤„ç†å™¨ -->
-    <!-- ä»¥å‰çš„å…¨éƒ¨æ³¨é‡Š -->
+    <!-- ´¦ÀíÆ÷ -->
+    <!-- ÒÔÇ°µÄÈ«²¿×¢ÊÍ -->
 	<!--
     <bean name="/hello" class="com.novel.controller.HelloWorldController"/>
     -->

@@ -20,7 +20,7 @@ public class TianyaService {
 	@Autowired
 	private TianyaDao tianyaDao;
 	/**
-	 * 查询所有的天涯任务
+	 * 鏌ヨ鎵�鏈夌殑澶╂动浠诲姟
 	 * @param para
 	 * @return
 	 * @throws Exception
@@ -36,17 +36,17 @@ public class TianyaService {
 	}
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void bookDaotest() throws Exception{
-		throw new RuntimeException("异常");
+		throw new RuntimeException("寮傚父");
 		/*
 		System.out.println("bookDao=" + bookDao);
-		System.out.println("tianya.总共=" + bookDao.queryMax());
+		System.out.println("tianya.鎬诲叡=" + bookDao.queryMax());
 		*/
 	}
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 //	@Transactional(propagation=Propagation.NESTED)
 	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	public void tianyaDaotest() throws Exception{
-		System.out.println("tianya.总共=" + tianyaDao.queryMax());
+		System.out.println("tianya.鎬诲叡=" + tianyaDao.queryMax());
 	}
 	
 	public BookDao getBookDao() {

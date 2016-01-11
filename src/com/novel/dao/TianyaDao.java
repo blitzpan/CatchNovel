@@ -36,7 +36,7 @@ public class TianyaDao {
 //		String sql = "SELECT  max(cast(id as UNSIGNED int)) from book;";
 //		int max = jdbcTemplate.queryForInt(sql);
 		
-		//ĞÂÔöÒ»¸ö´íÎóµÄ²åÈë£¬ÅĞ¶ÏÕâÀï¿Ï¶¨»á»Ø¹ö£¬´Ó¶øÅĞ¶ÏÊÇ·ñÔÚÍ¬Ò»¸öÊÂÎñÖ®ÖĞ¡£
+		//æ–°å¢ä¸€ä¸ªé”™è¯¯çš„æ’å…¥ï¼Œåˆ¤æ–­è¿™é‡Œè‚¯å®šä¼šå›æ»šï¼Œä»è€Œåˆ¤æ–­æ˜¯å¦åœ¨åŒä¸€ä¸ªäº‹åŠ¡ä¹‹ä¸­ã€‚
 		if(true){
 //			throw new RuntimeException("test");
 			String sql = "insert into book(id) values('1')";

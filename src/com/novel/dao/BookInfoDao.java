@@ -13,13 +13,13 @@ public class BookInfoDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	/**
-	 * @Description:²éÑ¯ËùÓĞµÄÊé¼®ĞÅÏ¢ 
+	 * @Description:æŸ¥è¯¢æ‰€æœ‰çš„ä¹¦ç±ä¿¡æ¯ 
 	 * @param @return
 	 * @param @throws Exception   
 	 * @return List  
 	 * @throws
 	 * @author Panyk
-	 * @date 2015Äê9ÔÂ29ÈÕ
+	 * @date 2015å¹´9æœˆ29æ—¥
 	 */
 	public List queryAllBookInfos() throws Exception{
 		String sql = "SELECT * from bookinfo";

@@ -53,16 +53,16 @@ public class SendMailUtils extends Thread{
 		}
 	}
 	/**
-	 * µ¥´¿µÄÎÄ±¾ÓÊ¼ş
+	 * å•çº¯çš„æ–‡æœ¬é‚®ä»¶
 	 * @return
 	 */
 	public String sendSimpleMail() {
 		SimpleMailMessage mail = new SimpleMailMessage();
 		try {
-			mail.setTo("1028353676@qq.com");// ½ÓÊÜÕß
-			mail.setFrom("youxiangformajia@163.com");// ·¢ËÍÕß,ºÍxmlÖĞµÄÒ»ÖÂ
-			mail.setSubject("ÓÊ¼ş²âÊÔ");// Ö÷Ìâ
-			mail.setText("¼òµ¥ÓÊ¼ş·¢ËÍ²âÊÔ");// ÓÊ¼şÄÚÈİ
+			mail.setTo("1028353676@qq.com");// æ¥å—è€…
+			mail.setFrom("youxiangformajia@163.com");// å‘é€è€…,å’Œxmlä¸­çš„ä¸€è‡´
+			mail.setSubject("é‚®ä»¶æµ‹è¯•");// ä¸»é¢˜
+			mail.setText("ç®€å•é‚®ä»¶å‘é€æµ‹è¯•");// é‚®ä»¶å†…å®¹
 			mailSender.send(mail);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,63 +70,63 @@ public class SendMailUtils extends Thread{
 		return "a";
 	}
 	/**
-	 * htmlÓÊ¼ş
+	 * htmlé‚®ä»¶
 	 * @throws Exception
 	 */
 	public void sendHtmlMail() throws Exception{
-		// ½¨Á¢ÓÊ¼şÏûÏ¢,·¢ËÍ¼òµ¥ÓÊ¼şºÍhtmlÓÊ¼şµÄÇø±ğ  
+		// å»ºç«‹é‚®ä»¶æ¶ˆæ¯,å‘é€ç®€å•é‚®ä»¶å’Œhtmlé‚®ä»¶çš„åŒºåˆ«  
         MimeMessage mailMessage = mailSender.createMimeMessage();  
         MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage,true,"GBK");  
         
-        messageHelper.setTo("1028353676@qq.com");// ½ÓÊÜÕß
-        messageHelper.setFrom("youxiangformajia@163.com");// ·¢ËÍÕß,ºÍxmlÖĞµÄÒ»ÖÂ
-        messageHelper.setSubject("ÓÊ¼ş²âÊÔ");// Ö÷Ìâ  
+        messageHelper.setTo("1028353676@qq.com");// æ¥å—è€…
+        messageHelper.setFrom("youxiangformajia@163.com");// å‘é€è€…,å’Œxmlä¸­çš„ä¸€è‡´
+        messageHelper.setSubject("é‚®ä»¶æµ‹è¯•");// ä¸»é¢˜  
         
-        // true ±íÊ¾Æô¶¯HTML¸ñÊ½µÄÓÊ¼ş  
+        // true è¡¨ç¤ºå¯åŠ¨HTMLæ ¼å¼çš„é‚®ä»¶  
         messageHelper  
                 .setText(  
-                        "<html><head>	<title>htmlÓÊ¼ş²âÊÔ</title></head><body>	<center><h1>htmlÓÊ¼ş²âÊÔ</h1></center>	<div id='content'>		<p style='text-indent: 2em;'>			ÍøÓÑÔ¬´óå·Ãû½ĞÔ¬³¿£¬ÊÇ°²»Õ»´ÄÏÊ¦·¶Ñ§ÔºÍâ¹úÓïÑ§ÔºµÄ´óÈıÑ§Éú¡£9ÔÂ8ÈÕÔçÉÏ8µã×óÓÒ£¬ËıÔÚĞ£ÃÅ¿Ú·öÆğÁËÒ»Î»Ë¤µ¹µÄÀÏÌ«£¬¿´µ½Çé¿öÑÏÖØ¾Í¸øËı²¦ÁË120£¬½á¹û±»ÀÏÈË¼ÒÊôÒªÇó¸ºÈ«Ôğ¡£		</p>		<p style='text-indent: 2em;'>¡°»´ÄÏÅ®´óÑ§Éú³Æ·öÀÏÌ«±»¶ï¡±µÄÄ¿»÷ÕßÒÑ¾­³öÃæÏò»´ÄÏ¾¯·½ËµÃ÷Çé¿ö£¬Í¨¹ı¸öÈËÎ¢²©Ê×¶ÈÏòÉç»á¹«¿ªËıËù¿´µ½µÄÒ»Ä»²¢¹«²¼ÁËÏÖ³¡ÕÕÆ¬¡£¡¡Ä¿»÷ÕßËµ£¬µ±Ê±ËıºÍÊÒÓÑÈ¥»´ÄÏÊ¦·¶Ñ§Ôº³Ô·¹£¬ÓëºÍĞ¡Ô¬¶ÔÏò¶øĞĞ¡£ÊÂÇé·¢ÉúÖ®Ç°£¬Ëı¿´µ½ÀÏÈË×ßÂ·²»ÎÈ£¬Ò»áËÒ»áËµÄ¡£ºóÀ´£¬Ğ¡Ô¬Æï³µ´ÓÀÏÌ«Éí±ß¾­¹ı£¬µ«²»ÖªµÀÊ²Ã´Ô­Òò£¬ÀÏÌ«¾Íµ¹µØÁË¡£µ±Ê±Ğ¡Ô¬Æï³µÒÑ¾­¹ıÈ¥ÁË£¬ÀÏÌ«ÓÖº°×¡Ğ¡Ô¬£¬Ğ¡Ô¬°Ñ³µ×ÓÍ£ÏÂ£¬½«ÀÏÌ«·ö×Å×øÁËÆğÀ´¡£Ëıµ±Ê±ÓÌÔ¥ÊÇ²»ÊÇ¹ıÈ¥£¬ºóÀ´»¹ÊÇ¹ıÈ¥ÁË£¬ºÍĞ¡Ô¬Ò»Æğ°ïÀÏÈËÈàÍÈ¡£¡¡Ä¿»÷ÕßÃ÷È·Ëµ£¬Ğ¡Ô¬Æï³µ´ÓÀÏÌ«Éí±ß¾­¹ıÊ±£¬Á½ÕßÖ®¼äÊÇÓĞ¾àÀëµÄ£¬ÇÒ²»×ãÒÔ×²µ¹ÀÏÈË£¬Ëı²¢Ã»ÓĞ¿´µ½ÀÏÈËÉíÉÏÓĞ²ÁÉËÖ®ÀàµÄ£¬ÀÏÈË±»Ì§ÉÏ120¼±¾È³µÇ°£¬Ò»Ö±ÊÇ×øÔÚµØÉÏµÄ¡£</br>		</p>	</div>	<div id='adDiv'>		<img src='http://www.p5w.net/money/xfsh/201509/W020150911358035928505.png' width='300' height='300'/>		<a href='http://www.p5w.net/money/xfsh/201509/t20150911_1191590.htm' target='_blank'>²é¿´Ô­ÎÄ</a>	</div></body></html>",  
+                        "<html><head>	<title>htmlé‚®ä»¶æµ‹è¯•</title></head><body>	<center><h1>htmlé‚®ä»¶æµ‹è¯•</h1></center>	<div id='content'>		<p style='text-indent: 2em;'>			ç½‘å‹è¢å¤§å®¸åå«è¢æ™¨ï¼Œæ˜¯å®‰å¾½æ·®å—å¸ˆèŒƒå­¦é™¢å¤–å›½è¯­å­¦é™¢çš„å¤§ä¸‰å­¦ç”Ÿã€‚9æœˆ8æ—¥æ—©ä¸Š8ç‚¹å·¦å³ï¼Œå¥¹åœ¨æ ¡é—¨å£æ‰¶èµ·äº†ä¸€ä½æ‘”å€’çš„è€å¤ªï¼Œçœ‹åˆ°æƒ…å†µä¸¥é‡å°±ç»™å¥¹æ‹¨äº†120ï¼Œç»“æœè¢«è€äººå®¶å±è¦æ±‚è´Ÿå…¨è´£ã€‚		</p>		<p style='text-indent: 2em;'>â€œæ·®å—å¥³å¤§å­¦ç”Ÿç§°æ‰¶è€å¤ªè¢«è®¹â€çš„ç›®å‡»è€…å·²ç»å‡ºé¢å‘æ·®å—è­¦æ–¹è¯´æ˜æƒ…å†µï¼Œé€šè¿‡ä¸ªäººå¾®åšé¦–åº¦å‘ç¤¾ä¼šå…¬å¼€å¥¹æ‰€çœ‹åˆ°çš„ä¸€å¹•å¹¶å…¬å¸ƒäº†ç°åœºç…§ç‰‡ã€‚ã€€ç›®å‡»è€…è¯´ï¼Œå½“æ—¶å¥¹å’Œå®¤å‹å»æ·®å—å¸ˆèŒƒå­¦é™¢åƒé¥­ï¼Œä¸å’Œå°è¢å¯¹å‘è€Œè¡Œã€‚äº‹æƒ…å‘ç”Ÿä¹‹å‰ï¼Œå¥¹çœ‹åˆ°è€äººèµ°è·¯ä¸ç¨³ï¼Œä¸€å´´ä¸€å´´çš„ã€‚åæ¥ï¼Œå°è¢éª‘è½¦ä»è€å¤ªèº«è¾¹ç»è¿‡ï¼Œä½†ä¸çŸ¥é“ä»€ä¹ˆåŸå› ï¼Œè€å¤ªå°±å€’åœ°äº†ã€‚å½“æ—¶å°è¢éª‘è½¦å·²ç»è¿‡å»äº†ï¼Œè€å¤ªåˆå–Šä½å°è¢ï¼Œå°è¢æŠŠè½¦å­åœä¸‹ï¼Œå°†è€å¤ªæ‰¶ç€åäº†èµ·æ¥ã€‚å¥¹å½“æ—¶çŠ¹è±«æ˜¯ä¸æ˜¯è¿‡å»ï¼Œåæ¥è¿˜æ˜¯è¿‡å»äº†ï¼Œå’Œå°è¢ä¸€èµ·å¸®è€äººæ‰è…¿ã€‚ã€€ç›®å‡»è€…æ˜ç¡®è¯´ï¼Œå°è¢éª‘è½¦ä»è€å¤ªèº«è¾¹ç»è¿‡æ—¶ï¼Œä¸¤è€…ä¹‹é—´æ˜¯æœ‰è·ç¦»çš„ï¼Œä¸”ä¸è¶³ä»¥æ’å€’è€äººï¼Œå¥¹å¹¶æ²¡æœ‰çœ‹åˆ°è€äººèº«ä¸Šæœ‰æ“¦ä¼¤ä¹‹ç±»çš„ï¼Œè€äººè¢«æŠ¬ä¸Š120æ€¥æ•‘è½¦å‰ï¼Œä¸€ç›´æ˜¯ååœ¨åœ°ä¸Šçš„ã€‚</br>		</p>	</div>	<div id='adDiv'>		<img src='http://www.p5w.net/money/xfsh/201509/W020150911358035928505.png' width='300' height='300'/>		<a href='http://www.p5w.net/money/xfsh/201509/t20150911_1191590.htm' target='_blank'>æŸ¥çœ‹åŸæ–‡</a>	</div></body></html>",  
                         true);  
-        // ·¢ËÍÓÊ¼ş  
+        // å‘é€é‚®ä»¶  
         mailSender.send(mailMessage);  
   
-        System.out.println("ÓÊ¼ş·¢ËÍ³É¹¦..");  
+        System.out.println("é‚®ä»¶å‘é€æˆåŠŸ..");  
 	}
 	/**
-	 * Í¨¹ıÄ£°åÀ´·¢ËÍÓÊ¼ş
+	 * é€šè¿‡æ¨¡æ¿æ¥å‘é€é‚®ä»¶
 	 * @return
 	 */
 	public void sendTemplateMail() throws Exception{
 		if(mailSender == null){
-			//²»ÓÃÔÙ¼ÓÔØspringContext.xmlÎÄ¼ş,ÒòÎªÔÚweb.xmlÖĞÅäÖÃÁË,ÔÚ³ÌĞòÖĞÆô¶¯ÊÇ¾ÍÓĞÁË¡£
+			//ä¸ç”¨å†åŠ è½½springContext.xmlæ–‡ä»¶,å› ä¸ºåœ¨web.xmlä¸­é…ç½®äº†,åœ¨ç¨‹åºä¸­å¯åŠ¨æ˜¯å°±æœ‰äº†ã€‚
 			mailSender = (JavaMailSender) SpringContextUtil.getBean("mailSender");  
 		}
-		// ½¨Á¢ÓÊ¼şÏûÏ¢,·¢ËÍ¼òµ¥ÓÊ¼şºÍhtmlÓÊ¼şµÄÇø±ğ  
+		// å»ºç«‹é‚®ä»¶æ¶ˆæ¯,å‘é€ç®€å•é‚®ä»¶å’Œhtmlé‚®ä»¶çš„åŒºåˆ«  
         MimeMessage mailMessage = mailSender.createMimeMessage();  
-        //ÕâÀïÒ»¶¨ÒªÊÇgbk£¬Èç¹ûÊÇutf-8µÄ»°£¬»á³öÏÖÂÒÂëÎÊÌâ
+        //è¿™é‡Œä¸€å®šè¦æ˜¯gbkï¼Œå¦‚æœæ˜¯utf-8çš„è¯ï¼Œä¼šå‡ºç°ä¹±ç é—®é¢˜
         MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage,true,"gbk");
 /*
-//		Èº·¢ÓÊ¼ş
+//		ç¾¤å‘é‚®ä»¶
 		String[] toUsers = new String[ubL.size()];
         int i=0;
         for(UserBook ub: ubL){
         	toUsers[i++] = ub.getEmail(); 
         }
-        messageHelper.setTo(toUsers);//½ÓÊÜÕß
+        messageHelper.setTo(toUsers);//æ¥å—è€…
 */
-        messageHelper.setFrom("youxiangformajia@163.com");// ·¢ËÍÕß,ºÍxmlÖĞµÄÒ»ÖÂ
-        messageHelper.setSubject(bookInfo.getArticleName());// Ö÷Ìâ  
+        messageHelper.setFrom("youxiangformajia@163.com");// å‘é€è€…,å’Œxmlä¸­çš„ä¸€è‡´
+        messageHelper.setSubject(bookInfo.getArticleName());// ä¸»é¢˜  
         
-        // true ±íÊ¾Æô¶¯HTML¸ñÊ½µÄÓÊ¼ş  
+        // true è¡¨ç¤ºå¯åŠ¨HTMLæ ¼å¼çš„é‚®ä»¶  
         messageHelper.setText(getEmailContent(), true);
-//        mailSender.send(mailMessage);//Èº·¢ÓÊ¼ş
+//        mailSender.send(mailMessage);//ç¾¤å‘é‚®ä»¶
         
-//      Ò»¸ö¸öµÄ·¢ÓÊ¼ş
+//      ä¸€ä¸ªä¸ªçš„å‘é‚®ä»¶
         for(UserBook ub: ubL){
         	messageHelper.setTo(ub.getEmail());
         	mailSender.send(mailMessage);
         }
-        System.out.println("ÓÊ¼ş·¢ËÍ³É¹¦..");  
+        System.out.println("é‚®ä»¶å‘é€æˆåŠŸ..");  
 	}
 	private String getEmailContent() throws Exception{
 		try {
@@ -143,7 +143,7 @@ public class SendMailUtils extends Thread{
 			map.put("sendTime", book.getGatherDate());
 			map.put("content", book.getContent());
 			map.put("url", book.getUrl());
-			map.put("fromName", "<a href=\""+bookInfo.getHomeUrl()+"\" target=\"_blank\">ÉñµÄÊ×Ò³</a>");
+			map.put("fromName", "<a href=\""+bookInfo.getHomeUrl()+"\" target=\"_blank\">ç¥çš„é¦–é¡µ</a>");
 			String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
 			return content;
 

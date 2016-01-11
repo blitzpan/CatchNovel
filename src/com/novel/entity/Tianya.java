@@ -16,17 +16,17 @@ public class Tianya {
 	private String pageNum;
 	private String state;
 	/**
-	 * 根据正则url和页码获取真实的页码
+	 * 鏍规嵁姝ｅ垯url鍜岄〉鐮佽幏鍙栫湡瀹炵殑椤电爜
 	 * @return
 	 */
 	public String getRealUrl(){
 		return articleUrl.replace("pageNum", pageNum);
 	}
 	/**
-	 * 页码加一
+	 * 椤电爜鍔犱竴
 	 */
 	public void pageNumAdd(){
-		pageNum = "" + (ComUtils.parseInt(pageNum) + 1);//页码+1
+		pageNum = "" + (ComUtils.parseInt(pageNum) + 1);//椤电爜+1
 	}
 	
 	@Override

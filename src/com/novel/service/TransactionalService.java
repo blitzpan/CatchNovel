@@ -9,11 +9,11 @@ import com.novel.dao.BookDao;
 import com.novel.dao.TianyaDao;
 
 /**
- *¹ØÓÚÊÂÎñÑ§Ï°µÄÒ»¸öservice
- *1.Èç¹ûÃ»ÓĞ¶¨ÒåÊÂÎñµÄ»°£¬ÅúÁ¿²åÈëÃ¿Ò»´Î³É¹¦²Ù×÷Êı¾İ¿âµÄ¼ÇÂ¼¶¼½«³É¹¦Ìá½»£¬Ö»ÓĞ³ö´íµÄÄÇÒ»´Î²Å»Ø¹öÁË£¬ÆäËûµÄ²»»á¹ö¡£
- *2.¶¨ÒåÁËÊÂÎñ£¬ÅúÁ¿²åÈëÖĞÖ»ÒªÓĞÒ»´ÎÊ§°Ü£¬ÄÇÃ´¾ÍÈ«²¿»Ø¹ö¡£
- *3.<mark>¹·ÈÕµÄ£¬ÕÛÌÚÁËÒ»ÏÂÎç£¬ºÃÏñµÃ³ö¸öÕâÃ´¸ö½áÂÛ£ºSERVICEÀï·½·¨µ÷±¾ÀàÖĞµÄ·½·¨ÊÇ²»»áÁíÍâÔÙ¿ªĞÂµÄÊÂÎñµÄ£¬
- *ÄÑµÀÒªÎªÁËÊµÏÖÊÂÎñ¶ø°ÑÒ»¸öÒµÎñµÄ·½·¨Ğ´µ½¶à¸öserviceÀïÃæ</mark>
+ *å…³äºäº‹åŠ¡å­¦ä¹ çš„ä¸€ä¸ªservice
+ *1.å¦‚æœæ²¡æœ‰å®šä¹‰äº‹åŠ¡çš„è¯ï¼Œæ‰¹é‡æ’å…¥æ¯ä¸€æ¬¡æˆåŠŸæ“ä½œæ•°æ®åº“çš„è®°å½•éƒ½å°†æˆåŠŸæäº¤ï¼Œåªæœ‰å‡ºé”™çš„é‚£ä¸€æ¬¡æ‰å›æ»šäº†ï¼Œå…¶ä»–çš„ä¸ä¼šæ»šã€‚
+ *2.å®šä¹‰äº†äº‹åŠ¡ï¼Œæ‰¹é‡æ’å…¥ä¸­åªè¦æœ‰ä¸€æ¬¡å¤±è´¥ï¼Œé‚£ä¹ˆå°±å…¨éƒ¨å›æ»šã€‚
+ *3.<mark>ç‹—æ—¥çš„ï¼ŒæŠ˜è…¾äº†ä¸€ä¸‹åˆï¼Œå¥½åƒå¾—å‡ºä¸ªè¿™ä¹ˆä¸ªç»“è®ºï¼šSERVICEé‡Œæ–¹æ³•è°ƒæœ¬ç±»ä¸­çš„æ–¹æ³•æ˜¯ä¸ä¼šå¦å¤–å†å¼€æ–°çš„äº‹åŠ¡çš„ï¼Œ
+ *éš¾é“è¦ä¸ºäº†å®ç°äº‹åŠ¡è€ŒæŠŠä¸€ä¸ªä¸šåŠ¡çš„æ–¹æ³•å†™åˆ°å¤šä¸ªserviceé‡Œé¢</mark>
  */
 @Transactional
 @Service
@@ -27,7 +27,7 @@ public class TransactionalService {
 	
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	/*public void addBook(String id) throws Exception{
-		System.out.println("²åÈëÊı¾İ=" + id);
+		System.out.println("æ’å…¥æ•°æ®=" + id);
 		bookDao.addBook(id);
 	}*/
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
@@ -37,7 +37,7 @@ public class TransactionalService {
 	}
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void addTianya() throws Exception{
-		System.out.println("ty²åÈë="+tianyaDao.addTianya());
+		System.out.println("tyæ’å…¥="+tianyaDao.addTianya());
 		for(int i =1; i<10; i++){
 //			this.addBook(i+"");
 			bookService.addBook(i+"");

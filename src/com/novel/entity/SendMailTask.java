@@ -1,6 +1,6 @@
 package com.novel.entity;
 /**
- * 邮件发送任务实体类
+ * 閭欢鍙戦�佷换鍔″疄浣撶被
  * @author admin
  *
  */
