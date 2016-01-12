@@ -14,13 +14,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.novel.entity.Chapter;
 import com.novel.entity.Tianya;
 import com.novel.service.ChapterService;
 import com.novel.service.TianyaService;
-@Service
+@Component
 public class TianyaCatcher {
 	Logger log = Logger.getLogger(this.getClass());
 	@Autowired
@@ -38,7 +38,7 @@ public class TianyaCatcher {
 	public void queryAllTask() {
 		try{
 			tyL = tianyaService.queryAll(null);
-			System.out.println("查询所有任务开始：");
+			log.info("查询天涯任务");
 			pool = Executors.newFixedThreadPool(threadCount);
 			for(Tianya ty : tyL){
 				System.out.println("采集开始：" + ty);
@@ -51,6 +51,7 @@ public class TianyaCatcher {
 			e.printStackTrace();
 		}
 	}
+	
 	class CatchOne implements Runnable{
 		Tianya ty = null;
 		public CatchOne(Tianya ty) {
@@ -58,52 +59,50 @@ public class TianyaCatcher {
 			this.ty = ty;
 		}
 		public void run() {
-			catchOne(ty);
-		}
-	}
-
-	/**
-	 * 采集一个
-	 * @param ty
-	 */
-	private void catchOne(Tianya ty){
-		Document doc = null;//一个页面
-		String oldPageNum = "";//初始化的pageNum
-		String pageNum = "";//页码
-		String content = "";
-		try{
+			Document doc = null;//一个页面
+			String oldPageNum = "";//初始化的pageNum
+			String pageNum = "";//页码
+			String content = "";
+		
 			String url = "";
 			pageNum = ty.getPageNum();
 			int i = 0;
 			Chapter chapter = null;
-			do{
-				chapter = new Chapter();
-				url = ty.getRealUrl();
-				//第一次获取
-				doc = getDocByUrl(url);
-				pageNum = getPageNum(doc);
-				if(pageNum.equals(oldPageNum)){//已经抓取过了，不处理
-					break;
+			while(true){
+				try{
+					chapter = new Chapter();
+					url = ty.getRealUrl();
+					//第一次获取
+					doc = getDocByUrl(url);
+					pageNum = getPageNum(doc);
+					if(pageNum.equals(oldPageNum)){//已经抓取过了，不处理
+						break;
+					}
+					content = getContent(ty,doc);
+					System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
+					//抓取的内容入库
+					chapter.setPageNum(pageNum);
+					chapter.setBookInfoId(ty.getBookId());
+					chapter.setContent(content);
+					chapter.setUrl(url);
+					tianyaService.addChapter(ty, chapter);
+					
+					oldPageNum = pageNum;
+					ty.pageNumAdd();
+					pageNum = ty.getPageNum();
+					if(i++ == 3){//测试，3条就跳出循环
+						System.out.println("超过了三次，break。");
+						break;
+					}
+				}catch(Exception e){
+					e.printStackTrace();
 				}
-				content = getContent(ty,doc);
-				System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
-				//抓取的内容入库
-				chapter.setPageNum(pageNum);
-				chapter.setBookInfoId(ty.getBookId());
-				chapter.setContent(content);
-				chapter.setUrl(url);
-				tianyaService.addChapter(ty, chapter);
-				
-				oldPageNum = pageNum;
-				ty.pageNumAdd();
-				pageNum = ty.getPageNum();
-				if(i++ == 3){//测试，3条就跳出循环
-					System.out.println("超过了三次，break。");
-					break;
+				try{
+					Thread.sleep(3000);
+				}catch(Exception e){
+					log.error("sleep error.", e);
 				}
-			}while(true);
-		}catch(Exception e){
-			e.printStackTrace();
+			}
 		}
 	}
 

@@ -1,7 +1,5 @@
 package com.novel.entity;
 
-import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
-
 import com.novel.util.ComUtils;
 
 public class Tianya {
