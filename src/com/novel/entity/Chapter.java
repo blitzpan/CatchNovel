@@ -8,12 +8,12 @@ public class Chapter {
 	private String url;
 	private String gatherDate;
 	private int sendMail;
+	//和书籍信息有关
+	private String authorName;
+	private String articleName;
+	private String homeUrl;
 		
-	@Override
-	public String toString() {
-		return "Book [id=" + id + ", bookInfoId=" + bookInfoId + ", pageNum=" + pageNum + ", content=" + content
-				+ ", gatherDate=" + gatherDate + ", sendMail=" + sendMail + "]";
-	}
+	
 	public String getId() {
 		return id;
 	}
@@ -55,5 +55,29 @@ public class Chapter {
 	}
 	public void setBookInfoId(String bookInfoId) {
 		this.bookInfoId = bookInfoId;
+	}
+	public String getAuthorName() {
+		return authorName;
+	}
+	public void setAuthorName(String authorName) {
+		this.authorName = authorName;
+	}
+	public String getArticleName() {
+		return articleName;
+	}
+	public void setArticleName(String articleName) {
+		this.articleName = articleName;
+	}
+	public String getHomeUrl() {
+		return homeUrl;
+	}
+	public void setHomeUrl(String homeUrl) {
+		this.homeUrl = homeUrl;
+	}
+	@Override
+	public String toString() {
+		return "Chapter [id=" + id + ", bookInfoId=" + bookInfoId + ", pageNum=" + pageNum + ", content=" + content
+				+ ", url=" + url + ", gatherDate=" + gatherDate + ", sendMail=" + sendMail + ", authorName="
+				+ authorName + ", articleName=" + articleName + ", homeUrl=" + homeUrl + "]";
 	}
 }

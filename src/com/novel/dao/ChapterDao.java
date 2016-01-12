@@ -30,7 +30,9 @@ public class ChapterDao {
 	 * @date 2016年1月12日
 	 */
 	public Chapter getOneChapterById(String id) throws Exception{
-		String sql = "select * from chapter where id=?";
+		String sql = "select c.*,bi.authorname,bi.articleName,bi.homeUrl from chapter c,bookinfo bi"
+				+ " where c.id=?"
+				+ " and c.bookInfoId=bi.bookId";
 		Chapter c = null;
 		try{
 			c = jdbcTemplate.queryForObject(sql, new Object[]{id}, new BeanPropertyRowMapper(Chapter.class));

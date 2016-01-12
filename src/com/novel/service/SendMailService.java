@@ -15,57 +15,39 @@ import com.novel.entity.SendTask;
 @Transactional
 public class SendMailService {
 	private Logger log = Logger.getLogger(this.getClass());
-	private Thread rt = null;
-	private boolean isRunning = true;
-	private long sleepTime = 1000 * 20;//20s发送一次
-	
 	@Autowired
 	private SendMailDao sendMailDao;
 	@Autowired
 	private ChapterDao chapterDao;
 	
-	public SendMailService(){
-		
-	}
-	
-	public void start() throws Exception{
-		if(rt == null || !rt.isAlive()){
-			log.debug("SendMailService.start()");
-			rt = new Thread(new SendMailThread());
-			rt.start();
+	public Object[] getOneTask() throws Exception{
+		SendTask st = null;
+		Chapter c = null;
+		//获取未发送
+		st = sendMailDao.getOneTask();
+		c = (Chapter) ChapterCache.get(st.getChapterId());
+		if(c == null){
+			c = chapterDao.getOneChapterById(st.getChapterId());
 		}
+		//设置为已发送成功
+		sendMailDao.setSended(st);
+		Object[] arr = new Object[]{st, c};
+		return arr;
 	}
-	public void stop() {
-		isRunning = false;
+
+	public SendMailDao getSendMailDao() {
+		return sendMailDao;
 	}
-	class SendMailThread implements Runnable {
-		public void run() {
-			log.info("SendMailThread run.");
-			SendTask st = null;
-			Chapter c = null;
-			while (isRunning) {
-				try {
-					//获取未发送
-					st = sendMailDao.getOneTask();
-					c = (Chapter) ChapterCache.get(st.getChapterId());
-					if(c == null){
-						c = chapterDao.getOneChapterById(st.getChapterId());
-					}
-					//设置为已发送成功
-					sendMailDao.setSended(st);
-					if(c!=null){//发送
-						
-					}
-				} catch (Exception e) {
-					log.error("SendMailThread error.", e);
-				}
-				try{
-					Thread.sleep(sleepTime);
-				}catch(Exception e){
-					log.error("sleep error.", e);
-				}
-			}
-			log.info("SendMailThread end.");
-		}
+
+	public void setSendMailDao(SendMailDao sendMailDao) {
+		this.sendMailDao = sendMailDao;
+	}
+
+	public ChapterDao getChapterDao() {
+		return chapterDao;
+	}
+
+	public void setChapterDao(ChapterDao chapterDao) {
+		this.chapterDao = chapterDao;
 	}
 }

@@ -2,9 +2,7 @@ package com.novel.util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
@@ -18,8 +16,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.novel.entity.Chapter;
-import com.novel.entity.BookInfo;
-import com.novel.entity.UserBook;
+import com.novel.entity.SendTask;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -29,26 +26,23 @@ public class SendMailUtils extends Thread{
 	private JavaMailSender mailSender;
 	@Autowired
 	private FreeMarkerConfigurer freemarkerConfiguration;
-	private Chapter book;
-	private BookInfo bookInfo;
-	private List<UserBook> ubL = null;
+	private Chapter chapter;
+	private SendTask st;
 	
 	
 	public SendMailUtils() {
 		super();
 	}
-	public SendMailUtils(Chapter book, BookInfo bi, List<UserBook> ubL) {
+	public SendMailUtils(Chapter chapter, SendTask st) {
 		super();
-		this.book = book;
-		this.ubL = ubL;
-		this.bookInfo = bi;
+		this.chapter = chapter;
+		this.st = st;
 	}
 	@Override
 	public void run() {
 		try {
 			this.sendTemplateMail();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -115,17 +109,15 @@ public class SendMailUtils extends Thread{
         messageHelper.setTo(toUsers);//接受者
 */
         messageHelper.setFrom("youxiangformajia@163.com");// 发送者,和xml中的一致
-        messageHelper.setSubject(bookInfo.getArticleName());// 主题  
+        messageHelper.setSubject(chapter.getArticleName());// 主题  
         
         // true 表示启动HTML格式的邮件  
         messageHelper.setText(getEmailContent(), true);
 //        mailSender.send(mailMessage);//群发邮件
         
 //      一个个的发邮件
-        for(UserBook ub: ubL){
-        	messageHelper.setTo(ub.getEmail());
-        	mailSender.send(mailMessage);
-        }
+    	messageHelper.setTo(st.getEmail());
+    	mailSender.send(mailMessage);
         System.out.println("邮件发送成功..");  
 	}
 	private String getEmailContent() throws Exception{
@@ -137,13 +129,13 @@ public class SendMailUtils extends Thread{
 
 			Map<String, String> map = new HashMap<String, String>();
 			
-			map.put("homeUrl", bookInfo.getHomeUrl());
-			map.put("title", bookInfo.getArticleName());
-			map.put("authorName", bookInfo.getAuthorName());
-			map.put("sendTime", book.getGatherDate());
-			map.put("content", book.getContent());
-			map.put("url", book.getUrl());
-			map.put("fromName", "<a href=\""+bookInfo.getHomeUrl()+"\" target=\"_blank\">神的首页</a>");
+			map.put("homeUrl", chapter.getHomeUrl());
+			map.put("title", chapter.getArticleName());
+			map.put("authorName", chapter.getAuthorName());
+			map.put("sendTime", chapter.getGatherDate());
+			map.put("content", chapter.getContent());
+			map.put("url", chapter.getUrl());
+			map.put("fromName", "<a href=\""+chapter.getHomeUrl()+"\" target=\"_blank\">神的首页</a>");
 			String content = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
 			return content;
 
