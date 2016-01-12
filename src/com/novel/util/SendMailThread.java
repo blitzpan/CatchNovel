@@ -24,9 +24,9 @@ public class SendMailThread implements Runnable {
 		while (isRunning) {
 			try {
 				Object[] arr = sendMailService.getOneTask();
-				st = (SendTask) arr[0];
-				c = (Chapter) arr[1];
-				if (c != null) {// 发送
+				if(arr!=null){
+					st = (SendTask) arr[0];
+					c = (Chapter) arr[1];
 					SendMailUtils smu = new SendMailUtils(c,st);
 					smu.start();
 				}

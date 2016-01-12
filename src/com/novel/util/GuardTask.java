@@ -11,6 +11,7 @@ public class GuardTask {
 	
 	public void doGuard() {
 		//发送任务
+		/*
 		try{
 			if(sendTaskThread==null || !sendTaskThread.isAlive()){
 				sendTaskThread = new Thread((SendTaskThread)SpringContextUtil.getBean("sendTaskThread"));
@@ -19,6 +20,7 @@ public class GuardTask {
 		}catch(Exception e){
 			log.error("sendTaskThread error.", e);
 		}
+		*/
 
 		//发送email
 		try{

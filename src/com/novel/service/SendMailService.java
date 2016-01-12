@@ -25,6 +25,9 @@ public class SendMailService {
 		Chapter c = null;
 		//获取未发送
 		st = sendMailDao.getOneTask();
+		if(st==null){
+			return null;
+		}
 		c = (Chapter) ChapterCache.get(st.getChapterId());
 		if(c == null){
 			c = chapterDao.getOneChapterById(st.getChapterId());
