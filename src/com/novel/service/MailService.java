@@ -57,7 +57,7 @@ public class MailService {
 					tempBi = biL.get(index);
 				}
 				System.out.println("bookInfo = " + tempBi);
-				new SendMailUtils(book, tempBi, ubL).start();
+//				new SendMailUtils(book, tempBi, ubL).start();
 				//发送完成改状态
 				bookDao.updateSendState(book);
 			}

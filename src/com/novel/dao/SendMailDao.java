@@ -56,7 +56,7 @@ public class SendMailDao {
 			}
 		});
 		//修改章节信息为已经发送
-		sql = "update chapter set sendmail=1 where id=?";
+		sql = "update chapter set sendmail=2 where id=?";
 		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {

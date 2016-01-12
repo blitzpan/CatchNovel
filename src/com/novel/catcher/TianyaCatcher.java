@@ -2,9 +2,6 @@ package com.novel.catcher;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.novel.entity.Chapter;
 import com.novel.entity.Tianya;
+import com.novel.entity.TianyaQueue;
 import com.novel.service.ChapterService;
 import com.novel.service.TianyaService;
 @Component
@@ -27,82 +25,81 @@ public class TianyaCatcher {
 	private TianyaService tianyaService;
 	@Autowired 
 	private ChapterService chapterService;
-	private final int threadCount = 5;
-	private ExecutorService pool = null;
 	
-	private List<Tianya> tyL = null;//天涯任务list
-	/**
-	 * 查询所有要采集的任务
-	 * @throws Exception
-	 */
-	public void queryAllTask() {
+	private final int threadCount = 5;
+	private Thread[] threads = new Thread[threadCount];
+	
+	public void initThreads() {
 		try{
-			tyL = tianyaService.queryAll(null);
-			log.info("查询天涯任务");
-			pool = Executors.newFixedThreadPool(threadCount);
-			for(Tianya ty : tyL){
-				System.out.println("采集开始：" + ty);
-				CatchOne co = new CatchOne(ty);
-				pool.execute(co);//都扔到线程池中去执行
+			//初始化基本数据
+			tianyaService.addTianyaQueue();
+			log.debug("TianyaQueue.size=" + TianyaQueue.size());
+			
+			//开启线程
+			CatchOne co;
+			for(int i=0; i<threadCount; i++){
+				if(threads[i] == null || !threads[i].isAlive()){
+					threads[i] = new Thread(new CatchOne());
+					threads[i].start();
+				}
 			}
-			pool.shutdown();
-			System.out.println("查询所有任务结束。");
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error("initThreads error.", e);
 		}
 	}
 	
 	class CatchOne implements Runnable{
-		Tianya ty = null;
-		public CatchOne(Tianya ty) {
-			super();
-			this.ty = ty;
-		}
 		public void run() {
-			Document doc = null;//一个页面
-			String oldPageNum = "";//初始化的pageNum
-			String pageNum = "";//页码
-			String content = "";
-		
-			String url = "";
-			pageNum = ty.getPageNum();
-			int i = 0;
-			Chapter chapter = null;
 			while(true){
-				try{
-					chapter = new Chapter();
-					url = ty.getRealUrl();
-					//第一次获取
-					doc = getDocByUrl(url);
-					pageNum = getPageNum(doc);
-					if(pageNum.equals(oldPageNum)){//已经抓取过了，不处理
-						break;
-					}
-					content = getContent(ty,doc);
-					System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
-					//抓取的内容入库
-					chapter.setPageNum(pageNum);
-					chapter.setBookInfoId(ty.getBookId());
-					chapter.setContent(content);
-					chapter.setUrl(url);
-					tianyaService.addChapter(ty, chapter);
-					
-					oldPageNum = pageNum;
-					ty.pageNumAdd();
-					pageNum = ty.getPageNum();
-					if(i++ == 3){//测试，3条就跳出循环
-						System.out.println("超过了三次，break。");
-						break;
-					}
-				}catch(Exception e){
-					e.printStackTrace();
+				Document doc = null;//一个页面
+				String oldPageNum = "";//初始化的pageNum
+				String pageNum = "";//页码
+				String content = "";
+				Tianya ty = TianyaQueue.poll();
+				if(ty == null){
+					break;
 				}
-				try{
-					Thread.sleep(3000);
-				}catch(Exception e){
-					log.error("sleep error.", e);
+				String url = "";
+				pageNum = ty.getPageNum();
+				int i = 0;
+				Chapter chapter = null;
+				while(true){
+					try{
+						chapter = new Chapter();
+						url = ty.getRealUrl();
+						//第一次获取
+						doc = getDocByUrl(url);
+						pageNum = getPageNum(doc);
+						if(pageNum.equals(oldPageNum)){//已经抓取过了，不处理
+							break;
+						}
+						content = getContent(ty,doc);
+						System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
+						//抓取的内容入库
+						chapter.setPageNum(pageNum);
+						chapter.setBookInfoId(ty.getBookId());
+						chapter.setContent(content);
+						chapter.setUrl(url);
+						tianyaService.addChapter(ty, chapter);
+						
+						oldPageNum = pageNum;
+						ty.pageNumAdd();
+						pageNum = ty.getPageNum();
+						if(i++ == 3){//测试，3条就跳出循环
+							System.out.println("超过了三次，break。");
+							break;
+						}
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+					try{
+						Thread.sleep(3000);
+					}catch(Exception e){
+						log.error("sleep error.", e);
+					}
 				}
 			}
+			log.debug("catchOne 运行结束！");
 		}
 	}
 

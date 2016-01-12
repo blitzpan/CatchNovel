@@ -17,7 +17,7 @@ public class CatchTianyaTask {
 	private TianyaCatcher tianyaCatcher;
 	public void job1() {
 		System.out.println("采集任务开始：" + new Date());  
-		tianyaCatcher.queryAllTask();
+		tianyaCatcher.initThreads();
         System.out.println("采集任务结束：" + new Date());  
 	}
 	

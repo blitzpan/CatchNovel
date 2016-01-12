@@ -30,7 +30,7 @@ public class IndexController {
 	@RequestMapping("/index")
 	public ModelAndView index(){
 		try{
-			tianyaCatcher.queryAllTask();
+//			tianyaCatcher.queryAllTask();
 //			transactionalService.addBooks();
 		}catch(Exception e){
 			e.printStackTrace();
@@ -56,7 +56,7 @@ public class IndexController {
 		try {
 			long begin = System.currentTimeMillis();
 			System.out.println("begin:");
-			//ÔÚControllerÖÐµÄÁ½¸öservice²Ù×÷Êý¾Ý¿âÊÇÁ½¸öÊÂÎñ£¬tianyaServiceÖÐµÄÒì³£²¢²»»áµ¼ÖÂbookServiceµÄ»Ø¹ö
+			//ï¿½ï¿½Controllerï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½serviceï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tianyaServiceï¿½Ðµï¿½ï¿½ì³£ï¿½ï¿½ï¿½ï¿½ï¿½áµ¼ï¿½ï¿½bookServiceï¿½Ä»Ø¹ï¿½
 //			bookService.test();
 			System.out.println("end.spend time=" + (System.currentTimeMillis() - begin)/1000);
 //			tianyaService.test();

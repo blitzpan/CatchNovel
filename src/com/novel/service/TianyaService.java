@@ -12,6 +12,7 @@ import com.novel.dao.ChapterDao;
 import com.novel.dao.TianyaDao;
 import com.novel.entity.Chapter;
 import com.novel.entity.Tianya;
+import com.novel.entity.TianyaQueue;
 @Transactional
 @Service
 public class TianyaService {
@@ -19,6 +20,14 @@ public class TianyaService {
 	private ChapterDao bookDao;
 	@Autowired
 	private TianyaDao tianyaDao;
+	
+	public void addTianyaQueue() throws Exception{
+		List<Tianya> tyl = tianyaDao.queryAll(null);
+		for(Tianya ty : tyl){
+			TianyaQueue.add(ty);
+		}
+	}
+	
 	/**
 	 * 查询所有的天涯任务
 	 * @param para

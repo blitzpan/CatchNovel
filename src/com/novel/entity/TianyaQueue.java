@@ -10,7 +10,7 @@ public class TianyaQueue {
 	
 	private static Queue tyQ = new LinkedBlockingQueue();
 	
-	public static void add(Tianya ty){
+	public static synchronized void add(Tianya ty){
 		try{
 			if(!tyQ.contains(ty)){
 				tyQ.add(ty);
@@ -19,7 +19,7 @@ public class TianyaQueue {
 			log.error("TianyaQueue.add", e);
 		}
 	}
-	public static Tianya poll(){
+	public static synchronized Tianya poll(){
 		Tianya ty = null;
 		try{
 			ty = (Tianya) tyQ.poll();
@@ -27,5 +27,8 @@ public class TianyaQueue {
 			log.error("TianyaQueue.poll", e);
 		}
 		return ty;
+	}
+	public static int size(){
+		return tyQ.size();
 	}
 }
