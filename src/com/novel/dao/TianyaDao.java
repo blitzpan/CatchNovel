@@ -21,6 +21,14 @@ public class TianyaDao {
 		jdbcTemplate.update(sql, values);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
 	public List<Tianya> queryAll(Map para) throws Exception{
 		String sql = "SELECT * from tianya";
 		Object[] values = new Object[]{};

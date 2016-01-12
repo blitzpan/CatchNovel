@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import com.novel.entity.Book;
+import com.novel.entity.Chapter;
 import com.novel.entity.BookInfo;
 import com.novel.entity.UserBook;
 
@@ -29,7 +29,7 @@ public class SendMailUtils extends Thread{
 	private JavaMailSender mailSender;
 	@Autowired
 	private FreeMarkerConfigurer freemarkerConfiguration;
-	private Book book;
+	private Chapter book;
 	private BookInfo bookInfo;
 	private List<UserBook> ubL = null;
 	
@@ -37,7 +37,7 @@ public class SendMailUtils extends Thread{
 	public SendMailUtils() {
 		super();
 	}
-	public SendMailUtils(Book book, BookInfo bi, List<UserBook> ubL) {
+	public SendMailUtils(Chapter book, BookInfo bi, List<UserBook> ubL) {
 		super();
 		this.book = book;
 		this.ubL = ubL;

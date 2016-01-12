@@ -8,15 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novel.dao.BookDao;
+import com.novel.dao.ChapterDao;
 import com.novel.dao.TianyaDao;
-import com.novel.entity.Book;
+import com.novel.entity.Chapter;
 import com.novel.entity.Tianya;
 @Transactional
 @Service
 public class TianyaService {
 	@Autowired 
-	private BookDao bookDao;
+	private ChapterDao bookDao;
 	@Autowired
 	private TianyaDao tianyaDao;
 	/**
@@ -30,10 +30,28 @@ public class TianyaService {
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void addBook(Tianya ty, Book book) throws Exception{
-		bookDao.addBook(book);
+	public void addChapter(Tianya ty, Chapter chapter) throws Exception{
+		bookDao.addChapter(chapter);
 		tianyaDao.updatePage(ty);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void bookDaotest() throws Exception{
 		throw new RuntimeException("异常");
@@ -49,10 +67,10 @@ public class TianyaService {
 		System.out.println("tianya.总共=" + tianyaDao.queryMax());
 	}
 	
-	public BookDao getBookDao() {
+	public ChapterDao getBookDao() {
 		return bookDao;
 	}
-	public void setBookDao(BookDao bookDao) {
+	public void setBookDao(ChapterDao bookDao) {
 		this.bookDao = bookDao;
 	}
 	public TianyaDao getTianyaDao() {

@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novel.dao.BookDao;
+import com.novel.dao.ChapterDao;
 import com.novel.dao.BookInfoDao;
 import com.novel.dao.UserBookDao;
-import com.novel.entity.Book;
+import com.novel.entity.Chapter;
 import com.novel.entity.BookInfo;
 import com.novel.entity.UserBook;
 import com.novel.util.SendMailUtils;
@@ -21,7 +21,7 @@ import com.novel.util.SendMailUtils;
 public class MailService {
 	Logger log = Logger.getLogger(MailService.class);
 	@Autowired
-	private BookDao bookDao;
+	private ChapterDao bookDao;
 	@Autowired
 	private UserBookDao userBookDao;
 	@Autowired
@@ -38,20 +38,20 @@ public class MailService {
 		try{
 			List<UserBook> ubL = null;
 			List<BookInfo> biL = null;
-			Book parm = new Book();
+			Chapter parm = new Chapter();
 			parm.setSendMail(1);
-			List<Book> bookL = bookDao.queryBooks(parm);//查询所有需要发送的章节信息
+			List<Chapter> bookL = bookDao.queryChapters(parm);//查询所有需要发送的章节信息
 //			查询所有书籍信息
 			biL = bookInfoDao.queryAllBookInfos();
 			BookInfo tempBi = null;
 			int index = 0;
-			for(Book book : bookL){
+			for(Chapter book : bookL){
 				ubL = userBookDao.queryUserBook(book);
 				System.out.println("book=" + book);
 				System.out.println("ubL = "+ubL);
 				//查询要发送的这本书籍的信息
 				tempBi = new BookInfo();
-				tempBi.setBookId(book.getBookId());
+				tempBi.setBookId(book.getBookInfoId());
 				index = biL.indexOf(tempBi);
 				if(index > -1 && index < biL.size()){
 					tempBi = biL.get(index);
@@ -66,10 +66,10 @@ public class MailService {
 			log.error(e,e);
 		}
 	}
-	public BookDao getBookDao() {
+	public ChapterDao getBookDao() {
 		return bookDao;
 	}
-	public void setBookDao(BookDao bookDao) {
+	public void setBookDao(ChapterDao bookDao) {
 		this.bookDao = bookDao;
 	}
 }

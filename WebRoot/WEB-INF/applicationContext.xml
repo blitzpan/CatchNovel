@@ -31,8 +31,8 @@
 	 -->
 	
 	<task:scheduled-tasks> 
-		<task:scheduled ref="catchTianyaTask" method="job1" cron="0 0/20 * * * ?"/>
-		<task:scheduled ref="sendMailTask" method="sendMail" cron="0 0/2 * * * ?"/>
+		<task:scheduled ref="catchTianyaTask" method="job1" cron="0 0/2 * * * ?"/>
+		<task:scheduled ref="sendMailTask" method="sendMail" cron="0 0/59 * * * ?"/>
 	</task:scheduled-tasks>
 	<!---->
 	<!-- 加载数据库配置文件 -->

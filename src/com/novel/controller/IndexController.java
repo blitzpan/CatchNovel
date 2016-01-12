@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.novel.catcher.TianyaCatcher;
-import com.novel.service.BookService;
+import com.novel.service.ChapterService;
 import com.novel.service.MailService;
 import com.novel.service.TianyaService;
 import com.novel.service.TransactionalService;
@@ -21,7 +21,7 @@ public class IndexController {
 	@Autowired
 	private SendMailUtils mailUtils;
 	@Autowired
-	private BookService bookService;
+	private ChapterService bookService;
 	@Autowired
 	private TianyaService tianyaService;
 	@Autowired
@@ -57,7 +57,7 @@ public class IndexController {
 			long begin = System.currentTimeMillis();
 			System.out.println("begin:");
 			//在Controller中的两个service操作数据库是两个事务，tianyaService中的异常并不会导致bookService的回滚
-			bookService.test();
+//			bookService.test();
 			System.out.println("end.spend time=" + (System.currentTimeMillis() - begin)/1000);
 //			tianyaService.test();
 			

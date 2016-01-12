@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novel.dao.BookDao;
+import com.novel.dao.ChapterDao;
 import com.novel.dao.TianyaDao;
 
 /**
@@ -19,11 +19,11 @@ import com.novel.dao.TianyaDao;
 @Service
 public class TransactionalService {
 	@Autowired 
-	private BookDao bookDao;
+	private ChapterDao bookDao;
 	@Autowired
 	private TianyaDao tianyaDao;
 	@Autowired
-	private BookService bookService;
+	private ChapterService bookService;
 	
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	/*public void addBook(String id) throws Exception{
@@ -44,10 +44,10 @@ public class TransactionalService {
 		}
 	}
 	
-	public BookDao getBookDao() {
+	public ChapterDao getBookDao() {
 		return bookDao;
 	}
-	public void setBookDao(BookDao bookDao) {
+	public void setBookDao(ChapterDao bookDao) {
 		this.bookDao = bookDao;
 	}
 	public TianyaDao getTianyaDao() {
@@ -56,10 +56,10 @@ public class TransactionalService {
 	public void setTianyaDao(TianyaDao tianyaDao) {
 		this.tianyaDao = tianyaDao;
 	}
-	public BookService getBookService() {
+	public ChapterService getBookService() {
 		return bookService;
 	}
-	public void setBookService(BookService bookService) {
+	public void setBookService(ChapterService bookService) {
 		this.bookService = bookService;
 	}
 }

@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -15,16 +16,17 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.novel.entity.Book;
+import com.novel.entity.Chapter;
 import com.novel.entity.Tianya;
-import com.novel.service.BookService;
+import com.novel.service.ChapterService;
 import com.novel.service.TianyaService;
 @Service
 public class TianyaCatcher {
+	Logger log = Logger.getLogger(this.getClass());
 	@Autowired
 	private TianyaService tianyaService;
 	@Autowired 
-	private BookService bookService;
+	private ChapterService chapterService;
 	private final int threadCount = 5;
 	private ExecutorService pool = null;
 	
@@ -42,7 +44,6 @@ public class TianyaCatcher {
 				System.out.println("采集开始：" + ty);
 				CatchOne co = new CatchOne(ty);
 				pool.execute(co);//都扔到线程池中去执行
-//				new Thread(co).start();
 			}
 			pool.shutdown();
 			System.out.println("查询所有任务结束。");
@@ -74,9 +75,9 @@ public class TianyaCatcher {
 			String url = "";
 			pageNum = ty.getPageNum();
 			int i = 0;
-			Book book = null;
+			Chapter chapter = null;
 			do{
-				book = new Book();
+				chapter = new Chapter();
 				url = ty.getRealUrl();
 				//第一次获取
 				doc = getDocByUrl(url);
@@ -87,11 +88,11 @@ public class TianyaCatcher {
 				content = getContent(ty,doc);
 				System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
 				//抓取的内容入库
-				book.setPageNum(pageNum);
-				book.setBookId(ty.getBookId());
-				book.setContent(content);
-				book.setUrl(url);
-				tianyaService.addBook(ty, book);
+				chapter.setPageNum(pageNum);
+				chapter.setBookInfoId(ty.getBookId());
+				chapter.setContent(content);
+				chapter.setUrl(url);
+				tianyaService.addChapter(ty, chapter);
 				
 				oldPageNum = pageNum;
 				ty.pageNumAdd();
@@ -175,13 +176,6 @@ public class TianyaCatcher {
 		this.tianyaService = tianyaService;
 	}
 
-	public BookService getBookService() {
-		return bookService;
-	}
-
-	public void setBookService(BookService bookService) {
-		this.bookService = bookService;
-	}
 
 	public static void main(String[] args) {
 		String url = "http://bbs.tianya.cn/post-16-1150797-3.shtml";
@@ -194,6 +188,14 @@ public class TianyaCatcher {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public ChapterService getChapterService() {
+		return chapterService;
+	}
+
+	public void setChapterService(ChapterService chapterService) {
+		this.chapterService = chapterService;
 	}
 	
 }

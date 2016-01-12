@@ -1,8 +1,8 @@
 package com.novel.entity;
 
-public class Book {
+public class Chapter {
 	private String id;
-	private String bookId;
+	private String bookInfoId;
 	private String pageNum;
 	private String content;
 	private String url;
@@ -11,7 +11,7 @@ public class Book {
 		
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", bookId=" + bookId + ", pageNum=" + pageNum + ", content=" + content
+		return "Book [id=" + id + ", bookInfoId=" + bookInfoId + ", pageNum=" + pageNum + ", content=" + content
 				+ ", gatherDate=" + gatherDate + ", sendMail=" + sendMail + "]";
 	}
 	public String getId() {
@@ -19,12 +19,6 @@ public class Book {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public String getBookId() {
-		return bookId;
-	}
-	public void setBookId(String bookId) {
-		this.bookId = bookId;
 	}
 	public String getPageNum() {
 		return pageNum;
@@ -55,5 +49,11 @@ public class Book {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getBookInfoId() {
+		return bookInfoId;
+	}
+	public void setBookInfoId(String bookInfoId) {
+		this.bookInfoId = bookInfoId;
 	}
 }

@@ -7,20 +7,20 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.novel.entity.Book;
+import com.novel.entity.Chapter;
 import com.novel.entity.UserBook;
 @Repository
 public class UserBookDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	public List<UserBook> queryUserBook(Book book) throws Exception{
+	public List<UserBook> queryUserBook(Chapter book) throws Exception{
 		String sql = " SELECT u.id userid,u.email from user_book ub,user u "
 				+ " where ub.userid=u.id "
 				+ " and ub.sendMail=1 "
 				+ " and u.state>=1"
 				+ " and ub.bookid=?";
-		Object[] values = new Object[]{book.getBookId()};
+		Object[] values = new Object[]{book.getBookInfoId()};
 		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(UserBook.class), values);
 	}
 

@@ -13,47 +13,84 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.novel.entity.Book;
+import com.novel.entity.Chapter;
+import com.novel.entity.ChapterCache;
 @Repository
-public class BookDao {
+public class ChapterDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	public Map addBook(Book book) throws Exception{
-		//根据书号和章节查询content长度，如果长度不一致那么update，update结果为0那么insert
-		int dbLen = 0;
-		String sql = "SELECT CHAR_LENGTH(content) from book WHERE bookId=? and pageNum=?";
+	/**
+	 * @Description:获取一条数据，不存在则返回null 
+	 * @param @param id
+	 * @param @return
+	 * @param @throws Exception   
+	 * @return Chapter  
+	 * @throws
+	 * @author Panyk
+	 * @date 2016年1月12日
+	 */
+	public Chapter getOneChapterById(String id) throws Exception{
+		String sql = "select * from chapter where id=?";
+		Chapter c = null;
 		try{
-			dbLen = jdbcTemplate.queryForInt(sql, new Object[]{book.getBookId(), book.getPageNum()});
+			c = jdbcTemplate.queryForObject(sql, new Object[]{id}, new BeanPropertyRowMapper(Chapter.class));
+			ChapterCache.put(c.getId(), c);
 		}catch(Exception e){
 		}
-		if(book.getContent().length()>dbLen){
-			sql = "UPDATE book set content=?,sendMail=1 WHERE bookId=? and pageNum=?";
-			int i = jdbcTemplate.update(sql, new Object[]{book.getContent(), book.getBookId(), book.getPageNum()});
+		return c;
+	}
+	public Map addChapter(Chapter chapter) throws Exception{
+		//根据书号和章节查询content长度，如果长度不一致那么update，update结果为0那么insert
+		int dbLen = 0;
+		String sql = "SELECT CHAR_LENGTH(content) from Chapter WHERE bookinfoId=? and pageNum=?";
+		try{
+			dbLen = jdbcTemplate.queryForInt(sql, new Object[]{chapter.getBookInfoId(), chapter.getPageNum()});
+		}catch(Exception e){
+		}
+		if(chapter.getContent().length()>dbLen){
+			sql = "UPDATE chapter set content=?,sendMail=1 WHERE bookinfoId=? and pageNum=?";
+			int i = jdbcTemplate.update(sql, new Object[]{chapter.getContent(), chapter.getBookInfoId(), chapter.getPageNum()});
 			if(i<1){
-				sql = "INSERT into book(id,bookid,pagenum,`content`,url,gatherdate) values(?,?,?,?,?,SYSDATE())";
+				sql = "INSERT into chapter(id,bookinfoid,pagenum,`content`,url,gatherdate) values(?,?,?,?,?,SYSDATE())";
 				Object[] values = new Object[]{UUID.randomUUID().toString().replaceAll("-", ""),
-						book.getBookId(), book.getPageNum(), book.getContent(),book.getUrl()};
+						chapter.getBookInfoId(), chapter.getPageNum(), chapter.getContent(),chapter.getUrl()};
 				i = jdbcTemplate.update(sql,values);
 			}
 		}
 		return null;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * 查询所有满足条件的章节
-	 * @param book
+	 * @param chapter
 	 * @return
 	 * @throws Exception
 	 */
-	public List queryBooks(Book book) throws Exception{
-		String sql = "SELECT b.id,b.bookid,b.url,b.pageNum,b.content,DATE_FORMAT(b.gatherDate,'%Y-%c-%e %T') gatherDate,b.sendMail from book b where 1=1 ";
+	public List queryChapters(Chapter chapter) throws Exception{
+		String sql = "SELECT b.id,b.bookinfoid,b.url,b.pageNum,b.content,DATE_FORMAT(b.gatherDate,'%Y-%c-%e %T') gatherDate,b.sendMail from chapter b where 1=1 ";
 		List<Object> values = new ArrayList();
-		sql += this.makeQueryBooksSql(book, values);//这里的sql必须sql="返回值"，在子方法中的改变str不会改变父方法中的Str。
-		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Book.class), values.toArray());
+		sql += this.makeQueryChaptersSql(chapter, values);//这里的sql必须sql="返回值"，在子方法中的改变str不会改变父方法中的Str。
+		return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Chapter.class), values.toArray());
 	}
 	
-	private String makeQueryBooksSql(Book book, List values) throws Exception{
+	private String makeQueryChaptersSql(Chapter chapter, List values) throws Exception{
 		StringBuffer sb = new StringBuffer();
-		sb.append(" and b.sendmail=" + book.getSendMail());
+		sb.append(" and b.sendmail=" + chapter.getSendMail());
 		return sb.toString();
 	}
 	public void test() throws Exception{
@@ -88,7 +125,7 @@ public class BookDao {
 		//新增一个错误的插入，判断这里肯定会回滚，从而判断是否在同一个事务之中。
 		if(true){
 //			throw new RuntimeException("test");
-			String sql = "insert into book(id) values('1')";
+			String sql = "insert into chapter(id) values('1')";
 			System.out.println("jdbc = " + jdbcTemplate);
 			jdbcTemplate.update(sql);
 		}
@@ -97,7 +134,7 @@ public class BookDao {
 	}
 	/**
 	 * @Description:更新章节为已发送完成 
-	 * @param @param book
+	 * @param @param chapter
 	 * @param @return
 	 * @param @throws Exception   
 	 * @return int  
@@ -105,9 +142,9 @@ public class BookDao {
 	 * @author Panyk
 	 * @date 2015年9月28日
 	 */
-	public int updateSendState(Book book) throws Exception{
-		String sql = "UPDATE book set sendMail=0 WHERE id=?";
-		return jdbcTemplate.update(sql, book.getId());
+	public int updateSendState(Chapter chapter) throws Exception{
+		String sql = "UPDATE chapter set sendMail=0 WHERE id=?";
+		return jdbcTemplate.update(sql, chapter.getId());
 	}
 
 	public JdbcTemplate getJdbcTemplate() {
