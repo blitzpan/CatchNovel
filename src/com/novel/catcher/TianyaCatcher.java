@@ -26,14 +26,14 @@ public class TianyaCatcher {
 	@Autowired 
 	private ChapterService chapterService;
 	
-	private final int threadCount = 5;
+	private final int threadCount = 1;
 	private Thread[] threads = new Thread[threadCount];
 	
 	public void initThreads() {
 		try{
 			//初始化基本数据
 			tianyaService.addTianyaQueue();
-			log.debug("TianyaQueue.size=" + TianyaQueue.size());
+			log.info("TianyaQueue.size=" + TianyaQueue.size());
 			
 			//开启线程
 			CatchOne co;
@@ -49,7 +49,9 @@ public class TianyaCatcher {
 	}
 	
 	class CatchOne implements Runnable{
+		int sleepTime = 3000;
 		public void run() {
+			log.info("采集线程run:");
 			while(true){
 				Document doc = null;//一个页面
 				String oldPageNum = "";//初始化的pageNum
@@ -74,7 +76,7 @@ public class TianyaCatcher {
 							break;
 						}
 						content = getContent(ty,doc);
-						System.out.println("抓取到第【"+pageNum+"】页的内容=\n" + content);
+						log.debug("抓取到第【"+pageNum+"】页的内容=\n" + content);
 						//抓取的内容入库
 						chapter.setPageNum(pageNum);
 						chapter.setBookInfoId(ty.getBookId());
@@ -86,20 +88,20 @@ public class TianyaCatcher {
 						ty.pageNumAdd();
 						pageNum = ty.getPageNum();
 						if(i++ == 3){//测试，3条就跳出循环
-							System.out.println("超过了三次，break。");
+							log.debug("超过了三次，break。");
 							break;
 						}
 					}catch(Exception e){
-						e.printStackTrace();
+						log.error("抓去一页内容出现异常。", e);
 					}
 					try{
-						Thread.sleep(3000);
+						Thread.sleep(sleepTime);
 					}catch(Exception e){
 						log.error("sleep error.", e);
 					}
 				}
 			}
-			log.debug("catchOne 运行结束！");
+			log.info("采集线程运行结束！");
 		}
 	}
 
@@ -108,9 +110,8 @@ public class TianyaCatcher {
 		try{
 			doc = Jsoup.connect(url).timeout(1000*60).get();
 //			this.writeToFile(doc.toString());
-			System.out.println("完成");
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error("getDocByUrl", e);
 			throw e;
 		}
 		return doc;
@@ -132,7 +133,6 @@ public class TianyaCatcher {
 			Elements altInfos = e.getElementsByClass("atl-info");
 			if(altInfos.size()>0 && altInfos.get(0).toString().contains(ty.getAuthorId())){
 				sb.append(e.getElementsByClass("bbs-content").text());
-//				System.out.println(e.getElementsByClass("bbs-content").text());
 			}
 		}
 		return sb.toString();

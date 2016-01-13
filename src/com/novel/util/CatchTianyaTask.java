@@ -1,7 +1,6 @@
 package com.novel.util;
 
-import java.util.Date;
-
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -13,12 +12,14 @@ import com.novel.catcher.TianyaCatcher;
 @Component
 @Scope("prototype")  //每一个请求都有一个类来处理，避免线程安全问题。
 public class CatchTianyaTask {
+	Logger log = Logger.getLogger(this.getClass());
 	@Autowired
 	private TianyaCatcher tianyaCatcher;
+	
 	public void job1() {
-		System.out.println("采集任务开始：" + new Date());  
+		log.info("CatchTianyaTask begin:");
 		tianyaCatcher.initThreads();
-        System.out.println("采集任务结束：" + new Date());  
+		log.info("CatchTianyaTask end.");
 	}
 	
 	public TianyaCatcher getTianyaCatcher() {
