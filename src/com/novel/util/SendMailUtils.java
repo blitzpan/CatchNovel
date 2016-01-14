@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,6 +23,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 @Component
 public class SendMailUtils extends Thread{
+	Logger log = Logger.getLogger(SendMailUtils.class);
 	@Autowired
 	private JavaMailSender mailSender;
 	@Autowired
@@ -83,8 +85,7 @@ public class SendMailUtils extends Thread{
                         true);  
         // 发送邮件  
         mailSender.send(mailMessage);  
-  
-        System.out.println("邮件发送成功..");  
+        log.info("邮件发送成功..");
 	}
 	/**
 	 * 通过模板来发送邮件
@@ -118,7 +119,7 @@ public class SendMailUtils extends Thread{
 //      一个个的发邮件
     	messageHelper.setTo(st.getEmail());
     	mailSender.send(mailMessage);
-        System.out.println("邮件发送成功..");  
+        log.info("邮件发送成功..");
 	}
 	private String getEmailContent() throws Exception{
 		try {
@@ -140,14 +141,11 @@ public class SendMailUtils extends Thread{
 			return content;
 
 		} catch (TemplateException e) {
-			System.out.println("Error while processing FreeMarker template ");
-			e.printStackTrace();
+			log.error("Error while processing FreeMarker template ", e);
 		} catch (FileNotFoundException e) {
-			System.out.println("Error while open template file ");
-			e.printStackTrace();
+			log.error("Error while open template file ",e);
 		} catch (IOException e) {
-			System.out.println("Error while generate Email Content ");
-			e.printStackTrace();
+			log.error("Error while generate Email Content ", e);
 		}
 		return "";
 	}

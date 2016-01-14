@@ -28,8 +28,9 @@ public class SendMailThread implements Runnable {
 					st = (SendTask) arr[0];
 					c = (Chapter) arr[1];
 					SendMailUtils smu = new SendMailUtils(c,st);
-					System.out.println("发送邮件" + c);
-//					smu.start();
+					log.info("发送邮件to=" + st.getEmail() + "章节=" + c.getId());
+					log.debug("发送邮件内容=" + c);
+					smu.start();
 				}
 			} catch (Exception e) {
 				log.error("SendMailThread error.", e);
