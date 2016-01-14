@@ -93,4 +93,12 @@ public class Tianya {
 	public void setState(String state) {
 		this.state = state;
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Tianya){
+			Tianya ty  = (Tianya)obj;
+			return ty.getId().equals(this.id);
+		}
+		return false;
+	}
 }

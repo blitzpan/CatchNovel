@@ -5,6 +5,7 @@ public class Chapter {
 	private String bookInfoId;
 	private String pageNum;
 	private String content;
+	private int len;
 	private String url;
 	private String gatherDate;
 	private int sendMail;
@@ -74,10 +75,16 @@ public class Chapter {
 	public void setHomeUrl(String homeUrl) {
 		this.homeUrl = homeUrl;
 	}
+	public int getLen() {
+		return len;
+	}
+	public void setLen(int len) {
+		this.len = len;
+	}
 	@Override
 	public String toString() {
 		return "Chapter [id=" + id + ", bookInfoId=" + bookInfoId + ", pageNum=" + pageNum + ", content=" + content
-				+ ", url=" + url + ", gatherDate=" + gatherDate + ", sendMail=" + sendMail + ", authorName="
-				+ authorName + ", articleName=" + articleName + ", homeUrl=" + homeUrl + "]";
+				+ ", len=" + len + ", url=" + url + ", gatherDate=" + gatherDate + ", sendMail=" + sendMail
+				+ ", authorName=" + authorName + ", articleName=" + articleName + ", homeUrl=" + homeUrl + "]";
 	}
 }

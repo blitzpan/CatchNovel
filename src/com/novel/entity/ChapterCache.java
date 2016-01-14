@@ -10,6 +10,7 @@ public class ChapterCache {
 		chapters.put(key, value);
 	}
 	public static Object get(Object key){
-		return chapters.get(key);
+//		return chapters.get(key);
+		return null;//这个地方逻辑有问题
 	}
 }

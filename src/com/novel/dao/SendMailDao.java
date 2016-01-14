@@ -80,16 +80,17 @@ public class SendMailDao {
 	 */
 	public SendTask getOneTask() throws Exception{
 		SendTask st = null;
-		String sql = "select * from sendMailTask limit 0,1";
+		String sql = "select * from sendmailtask where status=0 limit 0,1";
 		try{
 			st = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper(SendTask.class));
 		}catch(Exception e){
+			
 		}
 		return st;
 	}
 	
 	public void setSended(SendTask st) throws Exception{
-		String sql = "delete from sendMailTask where id=?";
+		String sql = "update sendmailtask set status=1 where id=?";
 		jdbcTemplate.update(sql, st.getId());
 	}
 	

@@ -11,7 +11,7 @@ import com.novel.service.SendMailService;
 public class SendMailThread implements Runnable {
 	private Logger log = Logger.getLogger(this.getClass());
 	private boolean isRunning = true;
-	private long sleepTime = 1000 * 20;// 20s发送一次
+	private long sleepTime = 1000 * 20 *10;// 20s发送一次
 	@Autowired
 	private SendMailService sendMailService;
 	@Autowired

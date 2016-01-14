@@ -10,7 +10,7 @@ import com.novel.service.SendTaskService;
 public class SendTaskThread implements Runnable {
 	private Logger log = Logger.getLogger(this.getClass());
 	private boolean isRunning = true;
-	private long sleepTime = 1000 * 60 * 5;
+	private long sleepTime = 1000 * 60;
 	
 	@Autowired
 	private SendTaskService sendTaskService;

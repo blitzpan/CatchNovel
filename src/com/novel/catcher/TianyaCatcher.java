@@ -49,7 +49,7 @@ public class TianyaCatcher {
 	}
 	
 	class CatchOne implements Runnable{
-		int sleepTime = 3000;
+		int sleepTime = 1000 * 120;
 		public void run() {
 			log.info("采集线程run:");
 			while(true){
@@ -92,7 +92,7 @@ public class TianyaCatcher {
 							break;
 						}
 					}catch(Exception e){
-						log.error("抓去一页内容出现异常。", e);
+						log.error("抓取一页内容出现异常。", e);
 					}
 					try{
 						Thread.sleep(sleepTime);

@@ -44,18 +44,18 @@ public class ChapterDao {
 	public Map addChapter(Chapter chapter) throws Exception{
 		//根据书号和章节查询content长度，如果长度不一致那么update，update结果为0那么insert
 		int dbLen = 0;
-		String sql = "SELECT CHAR_LENGTH(content) from Chapter WHERE bookinfoId=? and pageNum=?";
+		String sql = "SELECT len from chapter WHERE bookinfoId=? and pageNum=?";
 		try{
 			dbLen = jdbcTemplate.queryForInt(sql, new Object[]{chapter.getBookInfoId(), chapter.getPageNum()});
 		}catch(Exception e){
 		}
 		if(chapter.getContent().length()>dbLen){
-			sql = "UPDATE chapter set content=?,sendMail=1 WHERE bookinfoId=? and pageNum=?";
-			int i = jdbcTemplate.update(sql, new Object[]{chapter.getContent(), chapter.getBookInfoId(), chapter.getPageNum()});
+			sql = "UPDATE chapter set content=?,len=?,sendMail=1 WHERE bookinfoId=? and pageNum=?";
+			int i = jdbcTemplate.update(sql, new Object[]{chapter.getContent(),chapter.getContent().length(), chapter.getBookInfoId(), chapter.getPageNum()});
 			if(i<1){
-				sql = "INSERT into chapter(id,bookinfoid,pagenum,`content`,url,gatherdate) values(?,?,?,?,?,SYSDATE())";
+				sql = "INSERT into chapter(id,bookinfoid,pagenum,`content`,url,gatherdate,len) values(?,?,?,?,?,SYSDATE(),?)";
 				Object[] values = new Object[]{UUID.randomUUID().toString().replaceAll("-", ""),
-						chapter.getBookInfoId(), chapter.getPageNum(), chapter.getContent(),chapter.getUrl()};
+						chapter.getBookInfoId(), chapter.getPageNum(), chapter.getContent(),chapter.getUrl(), chapter.getContent().length()};
 				i = jdbcTemplate.update(sql,values);
 			}
 		}
